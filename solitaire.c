@@ -16,12 +16,15 @@ int main(void) {
 
 	refresh();
 
+	int ch;
 	MEVENT event;
-	while (1) {
-		if (getch() == KEY_MOUSE) {
+	while (ch != 'q') {
+		ch = getch();
+		if (ch == KEY_MOUSE) {
 			if (getmouse(&event) == OK) {
 				if (event.bstate & BUTTON1_PRESSED) {
-					break;
+					clear();
+					mvprintw(0, 0, "mouseX: %d; mouseY: %d", event.x, event.y);
 				}
 			}
 		}
