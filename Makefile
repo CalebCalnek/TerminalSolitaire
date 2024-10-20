@@ -10,4 +10,4 @@ clean:
 	rm -f solitaire
 
 solitaire: solitaire.c
-	$(CC) $(CFLAGS) $(LDFLAGS) solitaire.c -o solitaire
+	$(CC) $(CFLAGS) solitaire.c -o solitaire $(LDFLAGS)
