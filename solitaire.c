@@ -1,4 +1,5 @@
 #include <curses.h>
+#include <locale.h>
 
 int card_x, card_y, card_width, card_height;
 int drag_card;
@@ -13,7 +14,7 @@ void draw_card(void) {
 	for (i = 0; i < 3; i++) {
 		move(y + i, x);
 		addch(' ');
-		addch(' ');
+		mvaddstr(y + i, x + 1, "♠♣♥♦");
 		addch(' ');
 	}
 	attroff(COLOR_PAIR(2));
@@ -42,6 +43,7 @@ void handle_mouse_event(MEVENT event) {
 }
 
 void init(void) {
+    setlocale(LC_ALL, "");
 	initscr();
 	keypad(stdscr, TRUE);
 	noecho();
