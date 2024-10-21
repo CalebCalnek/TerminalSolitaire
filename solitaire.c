@@ -10,6 +10,20 @@ void draw(void) {
 	attroff(COLOR_PAIR(2));
 }
 
+void handle_mouse_event(MEVENT event) {
+	if (event.bstate & BUTTON1_PRESSED) {
+		if (event.x == card_x && event.y == card_y) {
+			drag_card = 1;
+		}
+	} else if (event.bstate & BUTTON1_RELEASED) {
+		if (drag_card) {
+			card_x = event.x;
+			card_y = event.y;
+			drag_card = 0;
+		}
+	}
+}
+
 int main(void) {
 	initscr();
 	keypad(stdscr, TRUE);
@@ -37,24 +51,15 @@ int main(void) {
 
 	int ch;
 	MEVENT event;
+
+	/* loop */
 	while (ch != 'q') {
 		ch = getch();
 		if (ch == KEY_MOUSE) {
 			if (getmouse(&event) == OK) {
-				if (event.bstate & BUTTON1_PRESSED) {
-					if (event.x == card_x && event.y == card_y) {
-						drag_card = 1;
-					}
-				} else if (event.bstate & BUTTON1_RELEASED) {
-					if (drag_card) {
-						card_x = event.x;
-						card_y = event.y;
-						drag_card = 0;
-					}
-				}
+				handle_mouse_event(event);
 			}
 		}
-
 		draw();
 	}
 
