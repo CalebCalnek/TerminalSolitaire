@@ -1,6 +1,7 @@
 #include <curses.h>
 
 int card_x, card_y;
+int drag_card;
 
 void draw(void) {
 	clear();
@@ -27,7 +28,8 @@ int main(void) {
 	bkgd(COLOR_PAIR(1));
 
 	card_x = 0;
-	card_y = 1;
+	card_y = 0;
+	drag_card = 0;
 
 	refresh();
 
@@ -40,15 +42,20 @@ int main(void) {
 		if (ch == KEY_MOUSE) {
 			if (getmouse(&event) == OK) {
 				if (event.bstate & BUTTON1_PRESSED) {
-					draw();
-					mvprintw(0, 0, "mouseX: %d; mouseY: %d", event.x, event.y);
-				} else if (event.bstate & BUTTON1_RELEASED) {
 					if (event.x == card_x && event.y == card_y) {
-						mvprintw(2, 0, "clicked card");
+						drag_card = 1;
+					}
+				} else if (event.bstate & BUTTON1_RELEASED) {
+					if (drag_card) {
+						card_x = event.x;
+						card_y = event.y;
+						drag_card = 0;
 					}
 				}
 			}
 		}
+
+		draw();
 	}
 
 	endwin();
