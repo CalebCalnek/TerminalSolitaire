@@ -65,7 +65,7 @@ void init(void) {
 }
 
 void draw(void) {
-	clear();
+	erase();
 	draw_card();
 }
 
