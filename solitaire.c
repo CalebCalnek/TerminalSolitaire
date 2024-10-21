@@ -3,10 +3,19 @@
 int card_x, card_y;
 int drag_card;
 
-void draw(void) {
-	clear();
+void draw_card(void) {
+	int x, y, i;
+
+	x = card_x;
+	y = card_y;
+
 	attron(COLOR_PAIR(2));
-	mvprintw(card_y, card_x, " ");
+	for (i = 0; i < 3; i++) {
+		move(y + i, x);
+		addch(' ');
+		addch(' ');
+		addch(' ');
+	}
 	attroff(COLOR_PAIR(2));
 }
 
@@ -24,6 +33,11 @@ void handle_mouse_event(MEVENT event) {
 	}
 }
 
+void draw(void) {
+	clear();
+	draw_card();
+}
+
 int main(void) {
 	initscr();
 	keypad(stdscr, TRUE);
@@ -37,30 +51,26 @@ int main(void) {
 
 	/* color */
 	start_color();
-	init_pair(1, COLOR_WHITE, COLOR_BLUE);
-	init_pair(2, COLOR_BLACK, COLOR_RED);
+	init_pair(1, COLOR_WHITE, COLOR_GREEN);
+	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	bkgd(COLOR_PAIR(1));
 
 	card_x = 0;
 	card_y = 0;
 	drag_card = 0;
 
-	refresh();
-
-	draw();
-
 	int ch;
 	MEVENT event;
 
 	/* loop */
 	while (ch != 'q') {
+		draw();
 		ch = getch();
 		if (ch == KEY_MOUSE) {
 			if (getmouse(&event) == OK) {
 				handle_mouse_event(event);
 			}
 		}
-		draw();
 	}
 
 	endwin();
