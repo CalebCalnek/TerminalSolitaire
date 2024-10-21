@@ -1,6 +1,6 @@
 #include <curses.h>
 
-int card_x, card_y;
+int card_x, card_y, card_width, card_height;
 int drag_card;
 
 void draw_card(void) {
@@ -19,9 +19,17 @@ void draw_card(void) {
 	attroff(COLOR_PAIR(2));
 }
 
+int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2) {
+	return mx >= x1 && mx <= x2 && my >= y1 && my <= y2;
+}
+
 void handle_mouse_event(MEVENT event) {
 	if (event.bstate & BUTTON1_PRESSED) {
-		if (event.x == card_x && event.y == card_y) {
+		if (mouse_inbounds(
+			event.x, event.y,
+			card_x, card_y,
+			card_x + card_width, card_y + card_height
+		)) {
 			drag_card = 1;
 		}
 	} else if (event.bstate & BUTTON1_RELEASED) {
@@ -51,6 +59,8 @@ void init(void) {
 
 	card_x = 0;
 	card_y = 0;
+	card_width = 3;
+	card_height = 3;
 	drag_card = 0;
 }
 
