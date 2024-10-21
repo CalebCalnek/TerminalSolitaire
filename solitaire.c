@@ -33,16 +33,10 @@ void handle_mouse_event(MEVENT event) {
 	}
 }
 
-void draw(void) {
-	clear();
-	draw_card();
-}
-
-int main(void) {
+void init(void) {
 	initscr();
 	keypad(stdscr, TRUE);
 	noecho();
-
 	curs_set(0);
 
 	/* mouse settup */
@@ -58,9 +52,18 @@ int main(void) {
 	card_x = 0;
 	card_y = 0;
 	drag_card = 0;
+}
 
+void draw(void) {
+	clear();
+	draw_card();
+}
+
+int main(void) {
 	int ch;
 	MEVENT event;
+
+	init();
 
 	/* loop */
 	while (ch != 'q') {
