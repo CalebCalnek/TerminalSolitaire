@@ -1,5 +1,6 @@
 #include <curses.h>
 #include <locale.h>
+#include <card.h>
 
 int card_x, card_y, card_width, card_height;
 int drag_card;

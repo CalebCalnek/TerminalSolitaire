@@ -1,5 +1,5 @@
 CC = gcc
-CFLAGS = -Wall -g
+CFLAGS = -Wall -g -I.
 LDFLAGS = -lncursesw
 
 .PHONY: all clean
