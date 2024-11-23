@@ -1,5 +1,6 @@
 #include <curses.h>
 #include <stdio.h>
+#include <string.h>
 #include <wchar.h>
 #include <locale.h>
 #include "card.h"
@@ -14,17 +15,25 @@ void draw_card(struct card card) {
 	char *suit = suit_chars[card.suit];
 	char *rank = rank_chars[card.rank];
 
-	attron(COLOR_PAIR(2));
+	int end_x = card.rank == TEN ? CARD_WIDTH - 2 : CARD_WIDTH - 1;
+	int mid_x = CARD_WIDTH / 2;
+	int end_y = CARD_HEIGHT - 1;
+	int mid_y = CARD_HEIGHT / 2;
 
+	attron(COLOR_PAIR(card.suit & 2 ? 3 : 2));
+
+	// draw blank card
+	for (int i = 0; i < CARD_HEIGHT; i++) {
+		char space_buffer[CARD_WIDTH + 1];
+		memset(space_buffer, ' ', CARD_WIDTH);
+		space_buffer[CARD_WIDTH] = '\0';
+		mvaddstr(y + i, x, space_buffer);
+	}
+
+	// draw symbols
 	mvaddstr(y, x, rank);
-	mvaddstr(y, x + 1, "       ");
-	mvaddstr(y + 1, x, "        ");
-	mvaddstr(y + 2, x, "   ");
-	mvaddstr(y + 2, x + 3, suit);
-	mvaddstr(y + 2, x + 4, "    ");
-	mvaddstr(y + 3, x, "        ");
-	mvaddstr(y + 4, x, "       ");
-	mvaddstr(y + 4, x + 7, rank);
+	mvaddstr(y + mid_y, x + mid_x, suit);
+	mvaddstr(y + end_y, x + end_x, rank);
 
 	attroff(COLOR_PAIR(2));
 }

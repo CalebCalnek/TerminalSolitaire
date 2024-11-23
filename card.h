@@ -1,7 +1,7 @@
 #ifndef CARD_H
 #define CARD_H
 
-#define CARD_WIDTH 8
+#define CARD_WIDTH 7
 #define CARD_HEIGHT 5
 
 enum suit {

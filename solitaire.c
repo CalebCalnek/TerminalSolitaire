@@ -42,6 +42,7 @@ void init(void) {
 	start_color();
 	init_pair(1, COLOR_WHITE, COLOR_GREEN);
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
+	init_pair(3, COLOR_RED, COLOR_WHITE);
 	bkgd(COLOR_PAIR(1));
 
 	mycard.x = 0;
