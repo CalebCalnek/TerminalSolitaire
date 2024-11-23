@@ -6,7 +6,7 @@ int drag_card;
 struct card mycard;
 
 int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2) {
-	return mx >= x1 && mx <= x2 && my >= y1 && my <= y2;
+	return mx >= x1 && mx < x2 && my >= y1 && my < y2;
 }
 
 void handle_mouse_event(MEVENT event) {
@@ -46,6 +46,8 @@ void init(void) {
 
 	mycard.x = 0;
 	mycard.y = 0;
+	mycard.suit = DIAMONDS;
+	mycard.rank = KING;
 
 	drag_card = 0;
 }
