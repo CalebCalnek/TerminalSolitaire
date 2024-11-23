@@ -10,18 +10,23 @@ int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2) {
 }
 
 void handle_mouse_event(MEVENT event) {
+	static int prev_x = 0;
+	static int prev_y = 0;
+
 	if (event.bstate & BUTTON1_PRESSED) {
 		if (mouse_inbounds(
 			event.x, event.y,
 			mycard.x, mycard.y,
 			mycard.x + CARD_WIDTH, mycard.y + CARD_HEIGHT
 		)) {
+			prev_x = event.x;
+			prev_y = event.y;
 			drag_card = 1;
 		}
 	} else if (event.bstate & BUTTON1_RELEASED) {
 		if (drag_card) {
-			mycard.x = event.x;
-			mycard.y = event.y;
+			mycard.x += event.x - prev_x;
+			mycard.y += event.y - prev_y;
 			drag_card = 0;
 		}
 	}
