@@ -9,5 +9,5 @@ all: solitaire
 clean:
 	rm -f solitaire
 
-solitaire: solitaire.c
-	$(CC) $(CFLAGS) solitaire.c -o solitaire $(LDFLAGS)
+solitaire: solitaire.c card.c
+	$(CC) $(CFLAGS) solitaire.c card.c -o solitaire $(LDFLAGS)

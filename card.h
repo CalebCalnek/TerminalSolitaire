@@ -1,6 +1,9 @@
 #ifndef CARD_H
 #define CARD_H
 
+#define CARD_WIDTH 3
+#define CARD_HEIGHT 3
+
 enum suit {
 	CLUBS,
 	SPADES,
@@ -29,5 +32,7 @@ struct card {
 	enum rank rank;
 	int x, y;
 };
+
+void draw_card(struct card card);
 
 #endif
