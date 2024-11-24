@@ -3,7 +3,7 @@
 #include "card.h"
 
 int drag_card;
-struct card mycard;
+struct card *held;
 struct cardstack stacks[7];
 
 void handle_mouse_event(MEVENT event) {
@@ -20,16 +20,16 @@ void handle_mouse_event(MEVENT event) {
 					prev_x = event.x;
 					prev_y = event.y;
 					drag_card = 1;
-					printf("test: clicked %d\t", card_i->rank);
-					break;
+					held = card_i;
+					return;
 				}
 				card_i = card_i->prev;
 			}
 		}
 	} else if (event.bstate & BUTTON1_RELEASED) {
 		if (drag_card) {
-			mycard.x += event.x - prev_x;
-			mycard.y += event.y - prev_y;
+			held->x += event.x - prev_x;
+			held->y += event.y - prev_y;
 			drag_card = 0;
 		}
 	}
@@ -53,11 +53,6 @@ void init(void) {
 	init_pair(3, COLOR_RED, COLOR_WHITE);
 	bkgd(COLOR_PAIR(1));
 
-	mycard.x = 0;
-	mycard.y = 0;
-	mycard.suit = DIAMONDS;
-	mycard.rank = KING;
-
 	drag_card = 0;
 
 	stacks[0] = init_stack();
@@ -65,7 +60,6 @@ void init(void) {
 
 void draw(void) {
 	erase();
-	/* draw_card(mycard); */
 	draw_stack(stacks[0]);
 	/*
 	for (int i = 0; i < 7; i++) {
