@@ -57,11 +57,19 @@ void init(void) {
 	mycard.rank = KING;
 
 	drag_card = 0;
+
+	stacks[0] = init_stack();
 }
 
 void draw(void) {
 	erase();
-	draw_card(mycard);
+	/* draw_card(mycard); */
+	draw_stack(stacks[0]);
+	/*
+	for (int i = 0; i < 7; i++) {
+		draw_stack(stacks[i]);
+	}
+	*/
 }
 
 int main(void) {

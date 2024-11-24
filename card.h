@@ -36,6 +36,7 @@ struct card {
 struct cardstack {
 	struct node *top, *bottom;
 	int size;
+	int index;
 };
 
 struct node {
@@ -45,6 +46,8 @@ struct node {
 
 void draw_card(struct card card);
 
+struct cardstack init_stack();
 void push(struct cardstack basestack, struct cardstack newstack);
+void draw_stack(struct cardstack stack);
 
 #endif
