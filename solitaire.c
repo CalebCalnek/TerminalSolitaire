@@ -15,14 +15,14 @@ void handle_mouse_event(MEVENT event) {
 	static int prev_y = 0;
 	int i;
 	int card_x, card_y;
-	struct node *node_i;
+	struct card *card_i;
 
 	if (event.bstate & BUTTON1_PRESSED) {
 		for (i = 0; i < 7; i++) {
-			for (node_i = stacks[i].top; node_i != NULL;
-					node_i = node_i->prev) {
-				card_x = node_i->value.x;
-				card_y = node_i->value.y;
+			for (card_i = stacks[i].top; card_i != NULL;
+					card_i = card_i->prev) {
+				card_x = card_i->x;
+				card_y = card_i->y;
 
 				if (mouse_inbounds(
 					event.x, event.y,
@@ -32,7 +32,7 @@ void handle_mouse_event(MEVENT event) {
 					prev_x = event.x;
 					prev_y = event.y;
 					drag_card = 1;
-					printf("test: clicked %d\t", node_i->value.rank);
+					printf("test: clicked %d\t", card_i->rank);
 					break;
 				}
 			}

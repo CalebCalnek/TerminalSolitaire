@@ -31,17 +31,13 @@ struct card {
 	enum suit suit;
 	enum rank rank;
 	int x, y;
+	struct card *next, *prev;
 };
 
 struct cardstack {
-	struct node *top, *bottom;
+	struct card *top, *bottom;
 	int size;
 	int index;
-};
-
-struct node {
-	struct card value;
-	struct node *next, *prev;
 };
 
 void draw_card(struct card card);
