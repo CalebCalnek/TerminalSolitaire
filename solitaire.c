@@ -2,7 +2,6 @@
 #include <locale.h>
 #include "card.h"
 
-int drag_card;
 struct card *held;
 struct cardstack tableau[7];
 struct cardstack foundations[4];
@@ -22,7 +21,6 @@ void handle_mouse_event(MEVENT event) {
 				if (contact_card(event, *card_i)) {
 					prev_x = event.x;
 					prev_y = event.y;
-					drag_card = 1;
 					held = card_i;
 					return;
 				}
@@ -30,10 +28,10 @@ void handle_mouse_event(MEVENT event) {
 			}
 		}
 	} else if (event.bstate & BUTTON1_RELEASED) {
-		if (drag_card) {
+		if (held != NULL) {
 			held->x += event.x - prev_x;
 			held->y += event.y - prev_y;
-			drag_card = 0;
+			held = NULL;
 		}
 	}
 }
@@ -55,8 +53,6 @@ void init(void) {
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	init_pair(3, COLOR_RED, COLOR_WHITE);
 	bkgd(COLOR_PAIR(1));
-
-	drag_card = 0;
 
 	tableau[0] = init_stack();
 }
