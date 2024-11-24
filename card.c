@@ -9,6 +9,18 @@ char *suit_chars[4] = { "♣", "♠", "♥", "♦" };
 char *rank_chars[13] = { "A", "2", "3", "4", "5", "6", "7",
 	"8", "9", "10", "J", "Q", "K" };
 
+int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2) {
+	return mx >= x1 && mx < x2 && my >= y1 && my < y2;
+}
+
+int contact_card(MEVENT event, struct card card) {
+	return mouse_inbounds(
+			event.x, event.y,
+			card.x, card.y,
+			card.x + CARD_WIDTH, card.y + CARD_HEIGHT
+			);
+}
+
 void draw_card(struct card card) {
 	int x = card.x;
 	int y = card.y;

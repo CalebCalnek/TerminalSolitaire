@@ -1,3 +1,4 @@
+#include <curses.h>
 #include <stdlib.h>
 #include "card.h"
 

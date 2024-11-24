@@ -6,35 +6,24 @@ int drag_card;
 struct card mycard;
 struct cardstack stacks[7];
 
-int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2) {
-	return mx >= x1 && mx < x2 && my >= y1 && my < y2;
-}
-
 void handle_mouse_event(MEVENT event) {
 	static int prev_x = 0;
 	static int prev_y = 0;
 	int i;
-	int card_x, card_y;
 	struct card *card_i;
 
 	if (event.bstate & BUTTON1_PRESSED) {
 		for (i = 0; i < 7; i++) {
-			for (card_i = stacks[i].top; card_i != NULL;
-					card_i = card_i->prev) {
-				card_x = card_i->x;
-				card_y = card_i->y;
-
-				if (mouse_inbounds(
-					event.x, event.y,
-					card_x, card_y,
-					card_x + CARD_WIDTH, card_y + CARD_HEIGHT
-				)) {
+			card_i = stacks[i].top;
+			while (card_i != NULL) {
+				if (contact_card(event, *card_i)) {
 					prev_x = event.x;
 					prev_y = event.y;
 					drag_card = 1;
 					printf("test: clicked %d\t", card_i->rank);
 					break;
 				}
+				card_i = card_i->prev;
 			}
 		}
 	} else if (event.bstate & BUTTON1_RELEASED) {
