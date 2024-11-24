@@ -13,16 +13,29 @@ int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2) {
 void handle_mouse_event(MEVENT event) {
 	static int prev_x = 0;
 	static int prev_y = 0;
+	int i;
+	int card_x, card_y;
+	struct node *node_i;
 
 	if (event.bstate & BUTTON1_PRESSED) {
-		if (mouse_inbounds(
-			event.x, event.y,
-			mycard.x, mycard.y,
-			mycard.x + CARD_WIDTH, mycard.y + CARD_HEIGHT
-		)) {
-			prev_x = event.x;
-			prev_y = event.y;
-			drag_card = 1;
+		for (i = 0; i < 7; i++) {
+			for (node_i = stacks[i].top; node_i != NULL;
+					node_i = node_i->prev) {
+				card_x = node_i->value.x;
+				card_y = node_i->value.y;
+
+				if (mouse_inbounds(
+					event.x, event.y,
+					card_x, card_y,
+					card_x + CARD_WIDTH, card_y + CARD_HEIGHT
+				)) {
+					prev_x = event.x;
+					prev_y = event.y;
+					drag_card = 1;
+					printf("test: clicked %d\t", node_i->value.rank);
+					break;
+				}
+			}
 		}
 	} else if (event.bstate & BUTTON1_RELEASED) {
 		if (drag_card) {
