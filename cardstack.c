@@ -4,7 +4,7 @@
 struct cardstack init_stack() {
 	struct cardstack newstack;
 	newstack.top = NULL;
-	for (int i = 0; i < 5; i++) {
+	for (int i = 4; i >= 0; i--) {
 		struct card *card_i = (struct card *) malloc(sizeof(struct card));
 		struct node *node_i = (struct node *) malloc(sizeof(struct node));
 		card_i->x = 0;
@@ -14,7 +14,10 @@ struct cardstack init_stack() {
 		node_i->value = *card_i;
 		node_i->next = NULL;
 		if (newstack.top != NULL) {
-			node_i->next = newstack.top;
+			node_i->prev = newstack.top;
+			newstack.top->next = node_i;
+		} else {
+			newstack.bottom = node_i;
 		}
 		newstack.top = node_i;
 	}
@@ -28,7 +31,7 @@ void push(struct cardstack basestack, struct cardstack newstack) {
 
 void draw_stack(struct cardstack stack) {
 	struct node *i;
-	i = stack.top;
+	i = stack.bottom;
 	while (i != NULL) {
 		draw_card(i->value);
 		i = i->next;

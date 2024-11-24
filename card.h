@@ -41,7 +41,7 @@ struct cardstack {
 
 struct node {
 	struct card value;
-	struct node *next;
+	struct node *next, *prev;
 };
 
 void draw_card(struct card card);
