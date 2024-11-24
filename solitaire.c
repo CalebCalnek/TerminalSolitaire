@@ -4,7 +4,10 @@
 
 int drag_card;
 struct card *held;
-struct cardstack stacks[7];
+struct cardstack tableau[7];
+struct cardstack foundations[4];
+struct cardstack talon;
+struct cardstack wastepile;
 
 void handle_mouse_event(MEVENT event) {
 	static int prev_x = 0;
@@ -14,7 +17,7 @@ void handle_mouse_event(MEVENT event) {
 
 	if (event.bstate & BUTTON1_PRESSED) {
 		for (i = 0; i < 7; i++) {
-			card_i = stacks[i].top;
+			card_i = tableau[i].top;
 			while (card_i != NULL) {
 				if (contact_card(event, *card_i)) {
 					prev_x = event.x;
@@ -55,15 +58,15 @@ void init(void) {
 
 	drag_card = 0;
 
-	stacks[0] = init_stack();
+	tableau[0] = init_stack();
 }
 
 void draw(void) {
 	erase();
-	draw_stack(stacks[0]);
+	draw_stack(tableau[0]);
 	/*
 	for (int i = 0; i < 7; i++) {
-		draw_stack(stacks[i]);
+		draw_stack(tableau[i]);
 	}
 	*/
 }
