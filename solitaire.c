@@ -4,6 +4,7 @@
 
 int drag_card;
 struct card mycard;
+struct cardstack stacks[7];
 
 int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2) {
 	return mx >= x1 && mx < x2 && my >= y1 && my < y2;

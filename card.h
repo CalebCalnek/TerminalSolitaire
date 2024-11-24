@@ -33,6 +33,18 @@ struct card {
 	int x, y;
 };
 
+struct cardstack {
+	struct node *top, *bottom;
+	int size;
+};
+
+struct node {
+	struct card value;
+	struct node *next;
+};
+
 void draw_card(struct card card);
+
+void push(struct cardstack basestack, struct cardstack newstack);
 
 #endif

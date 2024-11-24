@@ -2,6 +2,8 @@ CC = gcc
 CFLAGS = -Wall -g -I.
 LDFLAGS = -lncursesw
 
+SRC = solitaire.c card.c cardstack.c
+
 .PHONY: all clean
 
 all: solitaire
@@ -9,5 +11,5 @@ all: solitaire
 clean:
 	rm -f solitaire
 
-solitaire: solitaire.c card.c
-	$(CC) $(CFLAGS) solitaire.c card.c -o solitaire $(LDFLAGS)
+solitaire: $(SRC)
+	$(CC) $(CFLAGS) $(SRC) -o solitaire $(LDFLAGS)
