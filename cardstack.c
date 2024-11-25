@@ -2,16 +2,14 @@
 #include <stdlib.h>
 #include "card.h"
 
-struct cardstack init_stack() {
+struct cardstack init_stack(int index) {
 	struct cardstack newstack;
 
 	newstack.top = NULL;
-	newstack.index = 0;
+	newstack.index = index;
 
 	for (int i = 4; i >= 0; i--) {
 		struct card *card_i = (struct card *) malloc(sizeof(struct card));
-		card_i->x = 0;
-		card_i->y = 5 - i;
 		card_i->rank = i;
 		card_i->suit = HEARTS;
 		if (newstack.top != NULL) {

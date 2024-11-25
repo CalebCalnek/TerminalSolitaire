@@ -65,18 +65,16 @@ void init(void) {
 	bkgd(COLOR_PAIR(1));
 
 	init_deck();
-
-	tableau[0] = init_stack();
+	for (int i = 0; i < 7; i++) {
+		tableau[i] = init_stack(i);
+	}
 }
 
 void draw(void) {
 	erase();
-	draw_stack(tableau[0]);
-	/*
 	for (int i = 0; i < 7; i++) {
 		draw_stack(tableau[i]);
 	}
-	*/
 }
 
 int main(void) {
