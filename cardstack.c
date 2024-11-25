@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include "card.h"
 
+extern struct card *deck[52];
+extern int deck_size;
+
 struct cardstack init_stack(int index) {
 	struct cardstack newstack;
 
@@ -9,10 +12,13 @@ struct cardstack init_stack(int index) {
 	newstack.index = index;
 
 	for (int i = index; i >= 0; i--) {
-		struct card *card_i = (struct card *) malloc(sizeof(struct card));
+		int rand_index = RAND(deck_size);
+		struct card *card_i = deck[rand_index];
+		deck[rand_index] = deck[deck_size - 1];
+		deck[deck_size - 1] = NULL;
+		deck_size--;
+
 		card_i->face = i == 0 ? UP : DOWN;
-		card_i->rank = i;
-		card_i->suit = HEARTS;
 		if (newstack.top != NULL) {
 			card_i->prev = newstack.top;
 			newstack.top->next = card_i;

@@ -5,7 +5,8 @@
 #include "card.h"
 
 struct card *held;
-struct card deck[52];
+struct card *deck[52];
+int deck_size;
 struct cardstack tableau[7];
 struct cardstack foundations[4];
 struct cardstack talon;
@@ -42,9 +43,10 @@ void handle_mouse_event(MEVENT event) {
 void init_deck(void) {
 	int rank_i, suit_i;
 
+	deck_size = 52;
 	for (suit_i = 0; suit_i < 4; suit_i++) {
 		for (rank_i = 0; rank_i < 13; rank_i++) {
-			deck[suit_i * 13 + rank_i] = *init_card(suit_i, rank_i);
+			deck[suit_i * 13 + rank_i] = init_card(suit_i, rank_i);
 		}
 	}
 }
