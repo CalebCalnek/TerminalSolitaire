@@ -1,5 +1,6 @@
 #include <curses.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <wchar.h>
 #include <locale.h>
@@ -8,6 +9,14 @@
 char *suit_chars[4] = { "♣", "♠", "♥", "♦" };
 char *rank_chars[13] = { "A", "2", "3", "4", "5", "6", "7",
 	"8", "9", "10", "J", "Q", "K" };
+
+struct card *init_card(int suit, int rank) {
+	struct card *newcard;
+	newcard = (struct card *) malloc(sizeof(struct card));
+	newcard->suit = suit;
+	newcard->rank = rank;
+	return newcard;
+}
 
 int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2) {
 	return mx >= x1 && mx < x2 && my >= y1 && my < y2;

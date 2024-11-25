@@ -36,6 +36,16 @@ void handle_mouse_event(MEVENT event) {
 	}
 }
 
+void init_deck(void) {
+	int rank_i, suit_i;
+
+	for (rank_i = 0; rank_i < 4; rank_i++) {
+		for (suit_i = 0; suit_i < 13; suit_i++) {
+			init_card(suit_i, rank_i);
+		}
+	}
+}
+
 void init(void) {
     setlocale(LC_ALL, "");
 	initscr();
@@ -53,6 +63,8 @@ void init(void) {
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	init_pair(3, COLOR_RED, COLOR_WHITE);
 	bkgd(COLOR_PAIR(1));
+
+	init_deck();
 
 	tableau[0] = init_stack();
 }
