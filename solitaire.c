@@ -1,5 +1,7 @@
 #include <curses.h>
 #include <locale.h>
+#include <stdlib.h>
+#include <time.h>
 #include "card.h"
 
 struct card *held;
@@ -53,6 +55,8 @@ void init(void) {
 	keypad(stdscr, TRUE);
 	noecho();
 	curs_set(0);
+
+	srand(time(NULL));
 
 	/* mouse settup */
 	mousemask(ALL_MOUSE_EVENTS | REPORT_MOUSE_POSITION, NULL);

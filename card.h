@@ -8,6 +8,8 @@
 #define DOWN 0
 #define UP 1
 
+#define RAND(n) (rand() % (n))
+
 enum suit {
 	CLUBS,
 	SPADES,
