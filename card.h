@@ -3,6 +3,7 @@
 
 #define CARD_WIDTH 7
 #define CARD_HEIGHT 5
+#define STACK_SPACING 3
 
 enum suit {
 	CLUBS,
@@ -43,7 +44,7 @@ struct cardstack {
 struct card *init_card(int suit, int rank);
 int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2);
 int contact_card(MEVENT event, struct card card);
-void draw_card(struct card card);
+void draw_card(struct card card, int stack_i, int card_count);
 
 struct cardstack init_stack();
 void push(struct cardstack basestack, struct cardstack newstack);

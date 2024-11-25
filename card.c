@@ -30,9 +30,9 @@ int contact_card(MEVENT event, struct card card) {
 			);
 }
 
-void draw_card(struct card card) {
-	int x = card.x;
-	int y = card.y;
+void draw_card(struct card card, int stack_i, int card_count) {
+	int x = STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
+	int y = 1 + card_count;
 	char *suit = suit_chars[card.suit];
 	char *rank = rank_chars[card.rank];
 
@@ -58,15 +58,3 @@ void draw_card(struct card card) {
 
 	attroff(COLOR_PAIR(2));
 }
-
-/*
-int main() {
-	struct card mycard;
-	setlocale(LC_ALL, "");
-
-	mycard.suit = DIAMONDS;
-	mycard.rank = KING;
-
-	print_card(mycard);
-}
-*/
