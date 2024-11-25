@@ -44,10 +44,10 @@ void draw_card(struct card card, int stack_i, int card_count) {
 	attron(COLOR_PAIR(card.suit & 2 ? 3 : 2));
 
 	// draw blank card
+	char space_buffer[CARD_WIDTH + 1];
+	memset(space_buffer, ' ', CARD_WIDTH);
+	space_buffer[CARD_WIDTH] = '\0';
 	for (int i = 0; i < CARD_HEIGHT; i++) {
-		char space_buffer[CARD_WIDTH + 1];
-		memset(space_buffer, ' ', CARD_WIDTH);
-		space_buffer[CARD_WIDTH] = '\0';
 		mvaddstr(y + i, x, space_buffer);
 	}
 
