@@ -44,11 +44,11 @@ void draw_card(struct card card, int stack_i, int card_count) {
 	attron(COLOR_PAIR(card.suit & 2 ? 3 : 2));
 
 	// draw blank card
-	char space_buffer[CARD_WIDTH + 1];
-	memset(space_buffer, ' ', CARD_WIDTH);
-	space_buffer[CARD_WIDTH] = '\0';
+	char *fill_char = card.face == UP ? " " : "▒";
 	for (int i = 0; i < CARD_HEIGHT; i++) {
-		mvaddstr(y + i, x, space_buffer);
+		for (int j = 0; j < CARD_WIDTH; j++) {
+			mvaddstr(y + i, x + j, fill_char);
+		}
 	}
 
 	// draw symbols
