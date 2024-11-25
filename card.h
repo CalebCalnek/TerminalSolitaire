@@ -5,6 +5,9 @@
 #define CARD_HEIGHT 5
 #define STACK_SPACING 3
 
+#define DOWN 0
+#define UP 1
+
 enum suit {
 	CLUBS,
 	SPADES,
@@ -33,6 +36,7 @@ struct card {
 	enum rank rank;
 	int x, y;
 	struct card *next, *prev;
+	int face;
 };
 
 struct cardstack {

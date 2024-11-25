@@ -8,8 +8,9 @@ struct cardstack init_stack(int index) {
 	newstack.top = NULL;
 	newstack.index = index;
 
-	for (int i = 4; i >= 0; i--) {
+	for (int i = index; i >= 0; i--) {
 		struct card *card_i = (struct card *) malloc(sizeof(struct card));
+		card_i->face = i == 0 ? UP : DOWN;
 		card_i->rank = i;
 		card_i->suit = HEARTS;
 		if (newstack.top != NULL) {

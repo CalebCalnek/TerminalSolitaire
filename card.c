@@ -52,9 +52,11 @@ void draw_card(struct card card, int stack_i, int card_count) {
 	}
 
 	// draw symbols
-	mvaddstr(y, x, rank);
-	mvaddstr(y + mid_y, x + mid_x, suit);
-	mvaddstr(y + end_y, x + end_x, rank);
+	if (card.face == UP) {
+		mvaddstr(y, x, rank);
+		mvaddstr(y + mid_y, x + mid_x, suit);
+		mvaddstr(y + end_y, x + end_x, rank);
+	}
 
 	attroff(COLOR_PAIR(2));
 }
