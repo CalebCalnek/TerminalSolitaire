@@ -10,6 +10,7 @@ struct cardstack init_stack(int index) {
 
 	newstack.top = NULL;
 	newstack.index = index;
+	newstack.size = 0;
 
 	for (int i = index; i >= 0; i--) {
 		int rand_index = RAND(deck_size);
@@ -26,6 +27,7 @@ struct cardstack init_stack(int index) {
 			newstack.bottom = card_i;
 		}
 		newstack.top = card_i;
+		newstack.size++;
 	}
 
 	return newstack;

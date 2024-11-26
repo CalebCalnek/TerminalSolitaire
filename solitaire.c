@@ -12,6 +12,10 @@ struct cardstack foundations[4];
 struct cardstack talon;
 struct cardstack wastepile;
 
+int contains(int mx, int my, int x1, int y1, int x2, int y2) {
+	return mx >= x1 && mx < x2 && my >= y1 && my < y2;
+}
+
 void handle_mouse_event(MEVENT event) {
 	static int prev_x = 0;
 	static int prev_y = 0;
@@ -20,6 +24,19 @@ void handle_mouse_event(MEVENT event) {
 
 	if (event.bstate & BUTTON1_PRESSED) {
 		for (i = 0; i < 7; i++) {
+
+			if (contains(
+					event.x,
+					event.y,
+					STACK_SPACING * (i + 1) + CARD_WIDTH * i,
+					1,
+					STACK_SPACING * (i + 1) + CARD_WIDTH * i + CARD_WIDTH,
+					1 + tableau[i].size + (CARD_HEIGHT - 1)
+			)) {
+				printf("stack %d\n", i);
+				return;
+			}
+
 			card_i = tableau[i].top;
 			while (card_i != NULL) {
 				if (contact_card(event, *card_i)) {
