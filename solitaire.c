@@ -19,7 +19,7 @@ int contains(int mx, int my, int x1, int y1, int x2, int y2) {
 void handle_mouse_event(MEVENT event) {
 	static int prev_x = 0;
 	static int prev_y = 0;
-	int i;
+	int i, j;
 	struct card *card_i;
 
 	if (event.bstate & BUTTON1_PRESSED) {
@@ -33,10 +33,20 @@ void handle_mouse_event(MEVENT event) {
 					STACK_SPACING * (i + 1) + CARD_WIDTH * i + CARD_WIDTH,
 					1 + tableau[i].size + (CARD_HEIGHT - 1)
 			)) {
-				printf("stack %d\n", i);
+				card_i = tableau[i].top;
+				j = tableau[i].size - 1;
+				while (card_i != NULL) {
+					if (event.y >= 1 + j && event.y < 1 + j + CARD_HEIGHT) {
+						break;
+					}
+					card_i = card_i->prev;
+					j--;
+				}
+				printf("stack %d; card %d\n", i, j);
 				return;
 			}
 
+			/*
 			card_i = tableau[i].top;
 			while (card_i != NULL) {
 				if (contact_card(event, *card_i)) {
@@ -47,6 +57,7 @@ void handle_mouse_event(MEVENT event) {
 				}
 				card_i = card_i->prev;
 			}
+			*/
 		}
 	} else if (event.bstate & BUTTON1_RELEASED) {
 		if (held != NULL) {
