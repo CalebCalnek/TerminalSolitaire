@@ -5,6 +5,7 @@
 #include "card.h"
 
 struct card *held;
+int held_i, held_size;
 struct card *deck[52];
 int deck_size;
 struct cardstack tableau[7];
@@ -17,14 +18,11 @@ int contains(int mx, int my, int x1, int y1, int x2, int y2) {
 }
 
 void handle_mouse_event(MEVENT event) {
-	static int prev_x = 0;
-	static int prev_y = 0;
 	int i, j;
-	struct card *card_i;
+	struct card *card_i, *tmp;
 
 	if (event.bstate & BUTTON1_PRESSED) {
 		for (i = 0; i < 7; i++) {
-
 			if (contains(
 					event.x,
 					event.y,
@@ -42,28 +40,39 @@ void handle_mouse_event(MEVENT event) {
 					card_i = card_i->prev;
 					j--;
 				}
-				printf("stack %d; card %d\n", i, j);
+				held = card_i;
+				held_i = i;
+				held_size = tableau[i].size - j;
 				return;
 			}
-
-			/*
-			card_i = tableau[i].top;
-			while (card_i != NULL) {
-				if (contact_card(event, *card_i)) {
-					prev_x = event.x;
-					prev_y = event.y;
-					held = card_i;
-					return;
-				}
-				card_i = card_i->prev;
-			}
-			*/
 		}
 	} else if (event.bstate & BUTTON1_RELEASED) {
 		if (held != NULL) {
-			held->x += event.x - prev_x;
-			held->y += event.y - prev_y;
-			held = NULL;
+			for (i = 0; i < 7; i++) {
+				if (contains(
+						event.x,
+						event.y,
+						STACK_SPACING * (i + 1) + CARD_WIDTH * i,
+						1,
+						STACK_SPACING * (i + 1) + CARD_WIDTH * i + CARD_WIDTH,
+						1 + tableau[i].size + (CARD_HEIGHT - 1)
+				)) {
+					card_i = tableau[i].top;
+					tmp = held->prev;
+
+					card_i->next = held;
+					held->prev = card_i;
+					tableau[i].top = held;	// should be top of held stack
+					tableau[i].size += held_size;
+
+					tmp->next = NULL;
+					tableau[held_i].top = tmp;
+					tableau[held_i].top->face = UP;
+					tableau[held_i].size -= held_size;
+
+					held = NULL;
+				}
+			}
 		}
 	}
 }
