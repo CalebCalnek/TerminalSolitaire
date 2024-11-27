@@ -23,6 +23,7 @@ void handle_mouse_event(MEVENT event) {
 
 	if (event.bstate & BUTTON1_PRESSED) {
 		for (i = 0; i < 7; i++) {
+			if (tableau[i].size == 0) continue;
 			if (contains(
 					event.x,
 					event.y,
@@ -64,17 +65,27 @@ void handle_mouse_event(MEVENT event) {
 					card_i = tableau[i].top;
 					tmp = held->prev;
 
-					card_i->next = held;
-					held->prev = card_i;
+					if (card_i != NULL) {
+						card_i->next = held;
+						held->prev = card_i;
+					} else {
+						held->prev = NULL;
+						tableau[i].bottom = held;
+					}
 					tableau[i].top = held_top;
 					tableau[i].size += held_size;
 
-					tmp->next = NULL;
 					tableau[held_i].top = tmp;
-					tableau[held_i].top->face = UP;
 					tableau[held_i].size -= held_size;
+					if (tmp != NULL) {
+						tableau[held_i].top->face = UP;
+						tableau[held_i].top->next = NULL;
+					} else {
+						tableau[held_i].bottom = NULL;
+					}
 
 					held = NULL;
+					return;
 				}
 			}
 		}
