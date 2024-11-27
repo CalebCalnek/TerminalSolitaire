@@ -52,6 +52,7 @@ void handle_mouse_event(MEVENT event) {
 	} else if (event.bstate & BUTTON1_RELEASED) {
 		if (held != NULL) {
 			for (i = 0; i < 7; i++) {
+				if (i == held_i) continue;
 				if (contains(
 						event.x,
 						event.y,
