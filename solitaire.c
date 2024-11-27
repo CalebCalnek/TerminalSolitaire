@@ -4,7 +4,7 @@
 #include <time.h>
 #include "card.h"
 
-struct card *held;
+struct card *held, *held_top;
 int held_i, held_size;
 struct card *deck[52];
 int deck_size;
@@ -40,9 +40,12 @@ void handle_mouse_event(MEVENT event) {
 					card_i = card_i->prev;
 					j--;
 				}
-				held = card_i;
-				held_i = i;
-				held_size = tableau[i].size - j;
+				if (card_i->face != DOWN) {
+					held = card_i;
+					held_top = tableau[i].top;
+					held_i = i;
+					held_size = tableau[i].size - j;
+				}
 				return;
 			}
 		}
@@ -62,7 +65,7 @@ void handle_mouse_event(MEVENT event) {
 
 					card_i->next = held;
 					held->prev = card_i;
-					tableau[i].top = held;	// should be top of held stack
+					tableau[i].top = held_top;
 					tableau[i].size += held_size;
 
 					tmp->next = NULL;
