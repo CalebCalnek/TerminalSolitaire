@@ -41,9 +41,8 @@ void push(struct cardstack basestack, struct cardstack newstack) {
 void draw_empty_stack(int stack_i, int card_count) {
 	int i;
 
-	int x = STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
-	int y = 1 + card_count;
-
+	int x = TABLEAU_X + STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
+	int y = TABLEAU_Y + card_count;
 	int end_x = CARD_WIDTH - 1;
 	int end_y = CARD_HEIGHT - 1;
 

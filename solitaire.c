@@ -25,17 +25,18 @@ void handle_mouse_event(MEVENT event) {
 		for (i = 0; i < 7; i++) {
 			if (tableau[i].size == 0) continue;
 			if (contains(
-					event.x,
-					event.y,
-					STACK_SPACING * (i + 1) + CARD_WIDTH * i,
-					1,
-					STACK_SPACING * (i + 1) + CARD_WIDTH * i + CARD_WIDTH,
-					1 + tableau[i].size + (CARD_HEIGHT - 1)
+				event.x,
+				event.y,
+				TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
+				TABLEAU_Y,
+				TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
+				TABLEAU_Y + tableau[i].size + (CARD_HEIGHT - 1)
 			)) {
 				card_i = tableau[i].top;
 				j = tableau[i].size - 1;
 				while (card_i != NULL) {
-					if (event.y >= 1 + j && event.y < 1 + j + CARD_HEIGHT) {
+					if (event.y >= TABLEAU_Y + j &&
+					event.y < TABLEAU_Y + j + CARD_HEIGHT) {
 						break;
 					}
 					card_i = card_i->prev;
@@ -55,12 +56,12 @@ void handle_mouse_event(MEVENT event) {
 			for (i = 0; i < 7; i++) {
 				if (i == held_i) continue;
 				if (contains(
-						event.x,
-						event.y,
-						STACK_SPACING * (i + 1) + CARD_WIDTH * i,
-						1,
-						STACK_SPACING * (i + 1) + CARD_WIDTH * i + CARD_WIDTH,
-						1 + tableau[i].size + (CARD_HEIGHT - 1)
+					event.x,
+					event.y,
+					TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
+					TABLEAU_Y,
+					TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
+					TABLEAU_Y + tableau[i].size + (CARD_HEIGHT - 1)
 				)) {
 					card_i = tableau[i].top;
 					tmp = held->prev;
@@ -104,7 +105,7 @@ void init_deck(void) {
 }
 
 void init(void) {
-    setlocale(LC_ALL, "");
+	setlocale(LC_ALL, "");
 	initscr();
 	keypad(stdscr, TRUE);
 	noecho();

@@ -31,8 +31,8 @@ int contact_card(MEVENT event, struct card card) {
 }
 
 void draw_card(struct card card, int stack_i, int card_count) {
-	int x = STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
-	int y = 1 + card_count;
+	int x = TABLEAU_X + STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
+	int y = TABLEAU_Y + card_count;
 	char *suit = suit_chars[card.suit];
 	char *rank = rank_chars[card.rank];
 

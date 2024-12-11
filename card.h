@@ -5,6 +5,9 @@
 #define CARD_HEIGHT 5
 #define STACK_SPACING 3
 
+#define TABLEAU_X 0
+#define TABLEAU_Y 1
+
 #define DOWN 0
 #define UP 1
 
