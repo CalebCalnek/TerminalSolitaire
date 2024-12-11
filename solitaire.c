@@ -51,45 +51,46 @@ void handle_mouse_event(MEVENT event) {
 				return;
 			}
 		}
-	} else if (event.bstate & BUTTON1_RELEASED) {
-		if (held != NULL) {
-			for (i = 0; i < 7; i++) {
-				if (i == held_i) continue;
-				if (contains(
-					event.x,
-					event.y,
-					TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
-					TABLEAU_Y,
-					TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
-					TABLEAU_Y + tableau[i].size + (CARD_HEIGHT - 1)
-				)) {
-					card_i = tableau[i].top;
-					tmp = held->prev;
+	} else if (event.bstate & BUTTON1_RELEASED && held != NULL) {
+		for (i = 0; i < 7; i++) {
+			// skip check for drop in same stack
+			if (i == held_i) continue;
 
-					if (card_i != NULL) {
-						card_i->next = held;
-						held->prev = card_i;
-					} else {
-						held->prev = NULL;
-						tableau[i].bottom = held;
-					}
-					tableau[i].top = held_top;
-					tableau[i].size += held_size;
+			if (contains(
+				event.x,
+				event.y,
+				TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
+				TABLEAU_Y,
+				TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
+				TABLEAU_Y + tableau[i].size + (CARD_HEIGHT - 1)
+			)) {
+				card_i = tableau[i].top;
+				tmp = held->prev;
 
-					tableau[held_i].top = tmp;
-					tableau[held_i].size -= held_size;
-					if (tmp != NULL) {
-						tableau[held_i].top->face = UP;
-						tableau[held_i].top->next = NULL;
-					} else {
-						tableau[held_i].bottom = NULL;
-					}
-
-					held = NULL;
-					return;
+				if (card_i != NULL) {
+					card_i->next = held;
+					held->prev = card_i;
+				} else {
+					held->prev = NULL;
+					tableau[i].bottom = held;
 				}
+				tableau[i].top = held_top;
+				tableau[i].size += held_size;
+
+				tableau[held_i].top = tmp;
+				tableau[held_i].size -= held_size;
+				if (tmp != NULL) {
+					tableau[held_i].top->face = UP;
+					tableau[held_i].top->next = NULL;
+				} else {
+					tableau[held_i].bottom = NULL;
+				}
+
+				held = NULL;
+				return;
 			}
 		}
+		held = NULL;
 	}
 }
 
