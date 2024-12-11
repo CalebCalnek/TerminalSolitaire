@@ -39,13 +39,28 @@ void push(struct cardstack basestack, struct cardstack newstack) {
 }
 
 void draw_empty_stack(int stack_i, int card_count) {
+	int i;
+
 	int x = STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
 	int y = 1 + card_count;
-	for (int i = 0; i < CARD_HEIGHT; i++) {
-		for (int j = 0; j < CARD_WIDTH; j++) {
-			mvaddstr(y + i, x + j, "a");
-		}
+
+	int end_x = CARD_WIDTH - 1;
+	int end_y = CARD_HEIGHT - 1;
+
+	// draw edges
+	for (i = 0; i < CARD_HEIGHT; i++) {
+		mvaddstr(y + i, x, "│");
+		mvaddstr(y + i, x + end_x, "│");
 	}
+	for (i = 0; i < CARD_WIDTH; i++) {
+		mvaddstr(y, x + i, "─");
+		mvaddstr(y + end_y, x + i, "─");
+	}
+
+	mvaddstr(y, x, "┌");
+	mvaddstr(y, x + end_x, "┐");
+	mvaddstr(y + end_y, x, "└");
+	mvaddstr(y + end_y, x + end_x, "┘");
 }
 
 void draw_stack(struct cardstack stack) {
