@@ -5,8 +5,11 @@
 #define CARD_HEIGHT 5
 #define STACK_SPACING 3
 
+#define TALON_X 0
+#define TALON_Y 1
+
 #define TABLEAU_X 0
-#define TABLEAU_Y 1
+#define TABLEAU_Y TALON_Y + CARD_HEIGHT + 1
 
 #define DOWN 0
 #define UP 1
@@ -58,5 +61,6 @@ void draw_card(struct card card, int stack_i, int card_count);
 struct cardstack init_stack(int index);
 void push(struct cardstack basestack, struct cardstack newstack);
 void draw_stack(struct cardstack stack);
+void draw_talon();
 
 #endif

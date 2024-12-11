@@ -128,6 +128,10 @@ void init(void) {
 	for (int i = 0; i < 7; i++) {
 		tableau[i] = init_stack(i);
 	}
+
+	talon.top = NULL;
+	talon.index = -1;
+	talon.size = 0;
 }
 
 void draw(void) {
@@ -135,6 +139,7 @@ void draw(void) {
 	for (int i = 0; i < 7; i++) {
 		draw_stack(tableau[i]);
 	}
+	draw_talon();
 }
 
 int main(void) {
