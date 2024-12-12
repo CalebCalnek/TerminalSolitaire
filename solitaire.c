@@ -130,17 +130,23 @@ void init(void) {
 		tableau[i] = init_stack(i);
 	}
 
+	/*
 	talon.top = NULL;
 	talon.index = -1;
 	talon.size = 0;
+	*/
 }
 
 void draw(void) {
+	int i;
 	erase();
-	for (int i = 0; i < 7; i++) {
+	for (i = 0; i < 7; i++) {
 		draw_stack(tableau[i]);
 	}
 	draw_talon();
+	for (i = 0; i < 4; i++) {
+		draw_foundations(i);
+	}
 }
 
 int main(void) {
