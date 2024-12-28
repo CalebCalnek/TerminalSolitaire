@@ -145,6 +145,30 @@ void draw_talon() {
 	mvaddstr(y + end_y, x + end_x, "┘");
 }
 
+void draw_waste() {
+	int i;
+
+	int x = WASTE_X + STACK_SPACING;
+	int y = WASTE_Y;
+	int end_x = CARD_WIDTH - 1;
+	int end_y = CARD_HEIGHT - 1;
+
+	// draw edges
+	for (i = 0; i < CARD_HEIGHT; i++) {
+		mvaddstr(y + i, x, "│");
+		mvaddstr(y + i, x + end_x, "│");
+	}
+	for (i = 0; i < CARD_WIDTH; i++) {
+		mvaddstr(y, x + i, "─");
+		mvaddstr(y + end_y, x + i, "─");
+	}
+
+	mvaddstr(y, x, "┌");
+	mvaddstr(y, x + end_x, "┐");
+	mvaddstr(y + end_y, x, "└");
+	mvaddstr(y + end_y, x + end_x, "┘");
+}
+
 void draw_foundations(int stack_i) {
 	int i;
 

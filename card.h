@@ -8,6 +8,9 @@
 #define TALON_X 0
 #define TALON_Y 1
 
+#define WASTE_X (STACK_SPACING + CARD_WIDTH)
+#define WASTE_Y 1
+
 #define FOUNDATION_X (3 * (STACK_SPACING + CARD_WIDTH))
 #define FOUNDATION_Y 1
 
@@ -66,6 +69,7 @@ struct cardstack init_talon();
 void push(struct cardstack basestack, struct cardstack newstack);
 void draw_stack(struct cardstack stack);
 void draw_talon();
+void draw_waste();
 void draw_foundations(int stack_i);
 
 #endif

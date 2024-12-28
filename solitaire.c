@@ -141,6 +141,7 @@ void draw(void) {
 		draw_stack(tableau[i]);
 	}
 	draw_talon();
+	draw_waste();
 	for (i = 0; i < 4; i++) {
 		draw_foundations(i);
 	}
