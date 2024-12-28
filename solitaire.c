@@ -22,6 +22,44 @@ void handle_mouse_event(MEVENT event) {
 	struct card *card_i, *tmp;
 
 	if (event.bstate & BUTTON1_PRESSED) {
+		/* check click talon*/
+		if (contains(
+			event.x,
+			event.y,
+			TALON_X + STACK_SPACING,
+			TALON_Y,
+			TALON_X + STACK_SPACING + CARD_WIDTH,
+			TALON_Y + CARD_HEIGHT
+		)) {
+			struct card *dst, *src;
+			src = talon.top;
+			dst = wastepile.top;
+
+			if (src == NULL) {
+				talon.top = wastepile.top;
+				talon.bottom = wastepile.bottom;
+				talon.size = wastepile.size;
+				wastepile.top = NULL;
+				wastepile.bottom = NULL;
+				wastepile.size = 0;
+				return;
+			}
+
+			talon.top = src->prev;
+			talon.size--;
+			if (dst != NULL) {
+				dst->next = src;
+			} else {
+				wastepile.bottom = src;
+			}
+			src->prev = dst;
+			wastepile.top = src;
+			wastepile.size++;
+
+			return;
+		}
+
+		/* check click tableau */
 		for (i = 0; i < 7; i++) {
 			if (tableau[i].size == 0) continue;
 			if (contains(
