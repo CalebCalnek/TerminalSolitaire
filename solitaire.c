@@ -47,16 +47,35 @@ void handle_mouse_event(MEVENT event) {
 
 			talon.top = src->prev;
 			talon.size--;
+			if (talon.top != NULL) {
+				talon.top->next = NULL;
+			}
 			if (dst != NULL) {
 				dst->next = src;
 			} else {
 				wastepile.bottom = src;
 			}
 			src->prev = dst;
+			src->face = UP;
 			wastepile.top = src;
 			wastepile.size++;
 
 			return;
+		}
+
+		/* check click waste */
+		if (wastepile.size > 0 && contains(
+			event.x,
+			event.y,
+			WASTE_X + STACK_SPACING,
+			WASTE_Y,
+			WASTE_X + STACK_SPACING + CARD_WIDTH,
+			WASTE_Y + CARD_HEIGHT
+		)) {
+			held = wastepile.top;
+			held_top = wastepile.top;
+			held_i = -1;
+			held_size = 1;
 		}
 
 		/* check click tableau */
@@ -115,13 +134,16 @@ void handle_mouse_event(MEVENT event) {
 				tableau[i].top = held_top;
 				tableau[i].size += held_size;
 
-				tableau[held_i].top = tmp;
-				tableau[held_i].size -= held_size;
+				int waste_move = (held == wastepile.top);
+				struct cardstack *src_stack;
+				src_stack = waste_move ? &wastepile : &(tableau[held_i]);
+				src_stack->top = tmp;
+				src_stack->size -= held_size;
 				if (tmp != NULL) {
-					tableau[held_i].top->face = UP;
-					tableau[held_i].top->next = NULL;
+					src_stack->top->face = UP;
+					src_stack->top->next = NULL;
 				} else {
-					tableau[held_i].bottom = NULL;
+					src_stack->bottom = NULL;
 				}
 
 				held = NULL;
