@@ -150,6 +150,48 @@ void handle_mouse_event(MEVENT event) {
 				return;
 			}
 		}
+
+		for (i = 0; i < 4; i++) {
+			if (held_size == 1 && contains(
+				event.x,
+				event.y,
+				FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
+				FOUNDATION_Y,
+				FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
+				FOUNDATION_Y + (CARD_HEIGHT - 1)
+			)) {
+				struct cardstack *dst;
+				struct card *src;
+				dst = &(foundations[i]);
+				src = held->prev;
+
+				if (dst->size > 0) {
+					dst->top->next = held;
+					held->prev = dst->top;
+				} else {
+					dst->bottom = held;
+					held->prev = NULL;
+				}
+				dst->top = held;
+				dst->size++;
+
+				int waste_move = (held == wastepile.top);
+				struct cardstack *src_stack;
+				src_stack = waste_move ? &wastepile : &(tableau[held_i]);
+				src_stack->top = src;
+				src_stack->size--;
+				if (src != NULL) {
+					src_stack->top->face = UP;
+					src_stack->top->next = NULL;
+				} else {
+					src_stack->bottom = NULL;
+				}
+
+				held = NULL;
+				return;
+			}
+		}
+
 		held = NULL;
 	}
 }

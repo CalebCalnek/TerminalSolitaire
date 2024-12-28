@@ -7,6 +7,7 @@ extern int deck_size;
 
 extern struct cardstack talon;
 extern struct cardstack wastepile;
+extern struct cardstack foundations[4];
 
 extern char *suit_chars[4];
 extern char *rank_chars[13];
@@ -210,6 +211,35 @@ void draw_foundations(int stack_i) {
 	int y = FOUNDATION_Y;
 	int end_x = CARD_WIDTH - 1;
 	int end_y = CARD_HEIGHT - 1;
+
+	if (foundations[stack_i].size > 0) {
+		struct card *card = foundations[stack_i].top;
+
+		if (card->rank == TEN) {
+			end_x = CARD_WIDTH - 2;
+		}
+
+		int mid_x = CARD_WIDTH / 2;
+		int mid_y = CARD_HEIGHT / 2;
+
+		char *suit = suit_chars[card->suit];
+		char *rank = rank_chars[card->rank];
+
+		attron(COLOR_PAIR(card->suit & 2 ? 3 : 2));
+		char *fill_char = " ";
+		for (int i = 0; i < CARD_HEIGHT; i++) {
+			for (int j = 0; j < CARD_WIDTH; j++) {
+				mvaddstr(y + i, x + j, fill_char);
+			}
+		}
+
+		mvaddstr(y, x, rank);
+		mvaddstr(y + mid_y, x + mid_x, suit);
+		mvaddstr(y + end_y, x + end_x, rank);
+
+		attroff(COLOR_PAIR(2));
+		return;
+	}
 
 	// draw edges
 	for (i = 0; i < CARD_HEIGHT; i++) {
