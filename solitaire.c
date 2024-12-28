@@ -17,9 +17,36 @@ int contains(int mx, int my, int x1, int y1, int x2, int y2) {
 	return mx >= x1 && mx < x2 && my >= y1 && my < y2;
 }
 
+void move_card(struct cardstack *dst, struct card *held, struct card *held_top, int held_i, int held_size) {
+	struct card *src;
+	struct cardstack *src_stack;
+
+	src = held->prev;
+	src_stack = held == wastepile.top ? &wastepile : &tableau[held_i];
+
+	if (dst->size > 0) {
+		dst->top->next = held;
+		held->prev = dst->top;
+	} else {
+		dst->bottom = held;
+		held->prev = NULL;
+	}
+	dst->top = held_top;
+	dst->size += held_size;
+
+	src_stack->top = src;
+	src_stack->size -= held_size;
+	if (src != NULL) {
+		src_stack->top->face = UP;
+		src_stack->top->next = NULL;
+	} else {
+		src_stack->bottom = NULL;
+	}
+}
+
 void handle_mouse_event(MEVENT event) {
 	int i, j;
-	struct card *card_i, *tmp;
+	struct card *card_i;
 
 	if (event.bstate & BUTTON1_PRESSED) {
 		/* check click talon*/
@@ -121,31 +148,7 @@ void handle_mouse_event(MEVENT event) {
 				TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
 				TABLEAU_Y + tableau[i].size + (CARD_HEIGHT - 1)
 			)) {
-				card_i = tableau[i].top;
-				tmp = held->prev;
-
-				if (card_i != NULL) {
-					card_i->next = held;
-					held->prev = card_i;
-				} else {
-					held->prev = NULL;
-					tableau[i].bottom = held;
-				}
-				tableau[i].top = held_top;
-				tableau[i].size += held_size;
-
-				int waste_move = (held == wastepile.top);
-				struct cardstack *src_stack;
-				src_stack = waste_move ? &wastepile : &(tableau[held_i]);
-				src_stack->top = tmp;
-				src_stack->size -= held_size;
-				if (tmp != NULL) {
-					src_stack->top->face = UP;
-					src_stack->top->next = NULL;
-				} else {
-					src_stack->bottom = NULL;
-				}
-
+				move_card(&tableau[i], held, held_top, held_i, held_size);
 				held = NULL;
 				return;
 			}
@@ -160,33 +163,7 @@ void handle_mouse_event(MEVENT event) {
 				FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
 				FOUNDATION_Y + (CARD_HEIGHT - 1)
 			)) {
-				struct cardstack *dst;
-				struct card *src;
-				dst = &(foundations[i]);
-				src = held->prev;
-
-				if (dst->size > 0) {
-					dst->top->next = held;
-					held->prev = dst->top;
-				} else {
-					dst->bottom = held;
-					held->prev = NULL;
-				}
-				dst->top = held;
-				dst->size++;
-
-				int waste_move = (held == wastepile.top);
-				struct cardstack *src_stack;
-				src_stack = waste_move ? &wastepile : &(tableau[held_i]);
-				src_stack->top = src;
-				src_stack->size--;
-				if (src != NULL) {
-					src_stack->top->face = UP;
-					src_stack->top->next = NULL;
-				} else {
-					src_stack->bottom = NULL;
-				}
-
+				move_card(&foundations[i], held, held_top, held_i, held_size);
 				held = NULL;
 				return;
 			}
