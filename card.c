@@ -41,10 +41,17 @@ void draw_card(struct card card, int stack_i, int card_count) {
 	int end_y = CARD_HEIGHT - 1;
 	int mid_y = CARD_HEIGHT / 2;
 
-	attron(COLOR_PAIR(card.suit & 2 ? 3 : 2));
+	char *fill_char;
+
+	if (card.face == UP) {
+		fill_char = " ";
+		attron(COLOR_PAIR(card.suit & 2 ? 3 : 2));
+	} else {
+		fill_char = "▒";
+		attron(COLOR_PAIR(4));	/* face down, color blue */
+	}
 
 	// draw blank card
-	char *fill_char = card.face == UP ? " " : "▒";
 	for (int i = 0; i < CARD_HEIGHT; i++) {
 		for (int j = 0; j < CARD_WIDTH; j++) {
 			mvaddstr(y + i, x + j, fill_char);

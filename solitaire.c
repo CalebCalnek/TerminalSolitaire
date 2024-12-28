@@ -123,6 +123,7 @@ void init(void) {
 	init_pair(1, COLOR_WHITE, COLOR_GREEN);
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	init_pair(3, COLOR_RED, COLOR_WHITE);
+	init_pair(4, COLOR_BLUE, COLOR_WHITE);
 	bkgd(COLOR_PAIR(1));
 
 	init_deck();
@@ -131,12 +132,6 @@ void init(void) {
 	}
 
 	talon = init_talon();
-
-	/*
-	talon.top = NULL;
-	talon.index = -1;
-	talon.size = 0;
-	*/
 }
 
 void draw(void) {

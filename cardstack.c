@@ -118,12 +118,14 @@ void draw_talon() {
 	int end_y = CARD_HEIGHT - 1;
 
 	if (talon.size > 0) {
+		attron(COLOR_PAIR(4));
 		char *fill_char = "▒";
 		for (int i = 0; i < CARD_HEIGHT; i++) {
 			for (int j = 0; j < CARD_WIDTH; j++) {
 				mvaddstr(y + i, x + j, fill_char);
 			}
 		}
+		attroff(COLOR_PAIR(2));
 		return;
 	}
 
