@@ -5,6 +5,15 @@
 extern struct card *deck[52];
 extern int deck_size;
 
+struct card *deck_select() {
+	int rand_index = RAND(deck_size);
+	struct card *card_i = deck[rand_index];
+	deck[rand_index] = deck[deck_size - 1];
+	deck[deck_size - 1] = NULL;
+	deck_size--;
+	return card_i;
+}
+
 struct cardstack init_stack(int index) {
 	struct cardstack newstack;
 
@@ -13,12 +22,7 @@ struct cardstack init_stack(int index) {
 	newstack.size = 0;
 
 	for (int i = index; i >= 0; i--) {
-		int rand_index = RAND(deck_size);
-		struct card *card_i = deck[rand_index];
-		deck[rand_index] = deck[deck_size - 1];
-		deck[deck_size - 1] = NULL;
-		deck_size--;
-
+		struct card *card_i = deck_select();
 		card_i->face = i == 0 ? UP : DOWN;
 		if (newstack.top != NULL) {
 			card_i->prev = newstack.top;
@@ -32,6 +36,19 @@ struct cardstack init_stack(int index) {
 
 	return newstack;
 }
+
+/*
+struct cardstack init_talon() {
+	struct cardstack newstack;
+
+	newstack.top = NULL;
+	newstack.size = 0;
+
+	while (deck[0] != NULL) {
+
+	}
+}
+*/
 
 void push(struct cardstack basestack, struct cardstack newstack) {
 	basestack.top->next = newstack.bottom;
