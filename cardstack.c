@@ -5,6 +5,8 @@
 extern struct card *deck[52];
 extern int deck_size;
 
+extern struct cardstack talon;
+
 struct card *deck_select() {
 	int rand_index = RAND(deck_size);
 	struct card *card_i = deck[rand_index];
@@ -37,7 +39,6 @@ struct cardstack init_stack(int index) {
 	return newstack;
 }
 
-/*
 struct cardstack init_talon() {
 	struct cardstack newstack;
 
@@ -45,10 +46,20 @@ struct cardstack init_talon() {
 	newstack.size = 0;
 
 	while (deck[0] != NULL) {
-
+		struct card *card_i = deck_select();
+		card_i->face = DOWN;
+		if (newstack.top != NULL) {
+			card_i->prev = newstack.top;
+			newstack.top->next = card_i;
+		} else {
+			newstack.bottom = card_i;
+		}
+		newstack.top = card_i;
+		newstack.size++;
 	}
+
+	return newstack;
 }
-*/
 
 void push(struct cardstack basestack, struct cardstack newstack) {
 	basestack.top->next = newstack.bottom;
@@ -105,6 +116,16 @@ void draw_talon() {
 	int y = TALON_Y;
 	int end_x = CARD_WIDTH - 1;
 	int end_y = CARD_HEIGHT - 1;
+
+	if (talon.size > 0) {
+		char *fill_char = "▒";
+		for (int i = 0; i < CARD_HEIGHT; i++) {
+			for (int j = 0; j < CARD_WIDTH; j++) {
+				mvaddstr(y + i, x + j, fill_char);
+			}
+		}
+		return;
+	}
 
 	// draw edges
 	for (i = 0; i < CARD_HEIGHT; i++) {

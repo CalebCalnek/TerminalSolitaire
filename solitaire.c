@@ -130,6 +130,8 @@ void init(void) {
 		tableau[i] = init_stack(i);
 	}
 
+	talon = init_talon();
+
 	/*
 	talon.top = NULL;
 	talon.index = -1;
