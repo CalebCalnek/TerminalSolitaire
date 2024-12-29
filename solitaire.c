@@ -4,41 +4,19 @@
 #include <time.h>
 #include "card.h"
 
-struct card *held, *held_top;
-int held_i, held_size;
 struct card *deck[52];
 int deck_size;
+
+struct cardstack *held;
 
 struct cardstack talon;
 struct cardstack wastepile;
 struct cardstack foundations[4];
 struct cardstack tableau[7];
 
-void move_card(struct cardstack *dst, struct card *held, struct card *held_top, int held_i, int held_size) {
-	struct card *src;
-	struct cardstack *src_stack;
-
-	src = held->prev;
-	src_stack = held == wastepile.top ? &wastepile : &tableau[held_i];
-
-	if (dst->size > 0) {
-		dst->top->next = held;
-		held->prev = dst->top;
-	} else {
-		dst->bottom = held;
-		held->prev = NULL;
-	}
-	dst->top = held_top;
-	dst->size += held_size;
-
-	src_stack->top = src;
-	src_stack->size -= held_size;
-	if (src != NULL) {
-		src_stack->top->face = UP;
-		src_stack->top->next = NULL;
-	} else {
-		src_stack->bottom = NULL;
-	}
+void set_held(struct card *top, struct card *bottom, int size, int i) {
+	held = (struct cardstack *) malloc(sizeof(struct cardstack));
+	*held = (struct cardstack) { top, bottom, size, i};
 }
 
 void handle_mouse_event(MEVENT event) {
@@ -77,10 +55,7 @@ void handle_mouse_event(MEVENT event) {
 
 		/* check click waste */
 		if (wastepile.size > 0 && wastepile_contains(event)) {
-			held = wastepile.top;
-			held_top = wastepile.top;
-			held_i = -1;
-			held_size = 1;
+			set_held(wastepile.top, wastepile.top, 1, -1);
 		}
 
 		/* check click tableau */
@@ -98,10 +73,7 @@ void handle_mouse_event(MEVENT event) {
 					j--;
 				}
 				if (card_i->face != DOWN) {
-					held = card_i;
-					held_top = tableau[i].top;
-					held_i = i;
-					held_size = tableau[i].size - j;
+					set_held(tableau[i].top, card_i, tableau[i].size - j, i);
 				}
 				return;
 			}
@@ -109,23 +81,26 @@ void handle_mouse_event(MEVENT event) {
 	} else if (event.bstate & BUTTON1_RELEASED && held != NULL) {
 		for (i = 0; i < 7; i++) {
 			// skip check for drop in same stack
-			if (i == held_i) continue;
+			if (i == held->index) continue;
 
 			if (tableau_contains(event, i)) {
-				move_card(&tableau[i], held, held_top, held_i, held_size);
+				move_card(&tableau[i], held);
+				free(held);
 				held = NULL;
 				return;
 			}
 		}
 
 		for (i = 0; i < 4; i++) {
-			if (held_size == 1 && foundation_contains(event, i)) {
-				move_card(&foundations[i], held, held_top, held_i, held_size);
+			if (held->size == 1 && foundation_contains(event, i)) {
+				move_card(&foundations[i], held);
+				free(held);
 				held = NULL;
 				return;
 			}
 		}
 
+		free(held);
 		held = NULL;
 	}
 }
@@ -162,24 +137,24 @@ void init(void) {
 	init_pair(4, COLOR_BLUE, COLOR_WHITE);
 	bkgd(COLOR_PAIR(1));
 
+	/* deal cards */
 	init_deck();
 	for (int i = 0; i < 7; i++) {
 		tableau[i] = init_stack(i);
 	}
-
 	talon = init_talon();
 }
 
 void draw(void) {
 	int i;
 	erase();
-	for (i = 0; i < 7; i++) {
-		draw_stack(tableau[i]);
-	}
 	draw_talon();
 	draw_waste();
 	for (i = 0; i < 4; i++) {
 		draw_foundations(i);
+	}
+	for (i = 0; i < 7; i++) {
+		draw_stack(tableau[i]);
 	}
 }
 
@@ -189,7 +164,7 @@ int main(void) {
 
 	init();
 
-	/* loop */
+	/* game loop */
 	while (ch != 'q') {
 		draw();
 		ch = getch();

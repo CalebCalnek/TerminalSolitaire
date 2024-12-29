@@ -70,7 +70,8 @@ struct cardstack init_talon() {
 
 void reset_talon() {
 	while (wastepile.top != NULL) {
-		move_card(&talon, wastepile.top, wastepile.top, -1, 1);
+		struct cardstack card = { wastepile.top, wastepile.top, 1, -1 };
+		move_card(&talon, &card);
 		talon.top->face = DOWN;
 	}
 }
