@@ -66,7 +66,6 @@ void draw_card(struct card card, int stack_i, int card_count);
 
 struct cardstack init_stack(int index);
 struct cardstack init_talon();
-void push(struct cardstack basestack, struct cardstack newstack);
 void draw_stack(struct cardstack stack);
 void draw_talon();
 void draw_waste();
