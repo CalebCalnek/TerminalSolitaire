@@ -105,7 +105,7 @@ int foundation_contains(MEVENT event, int i) {
 		FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
 		FOUNDATION_Y,
 		FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
-		FOUNDATION_Y + (CARD_HEIGHT - 1)
+		FOUNDATION_Y + CARD_HEIGHT
 	);
 }
 
