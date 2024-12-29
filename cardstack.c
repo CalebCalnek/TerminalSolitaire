@@ -8,6 +8,7 @@ extern int deck_size;
 extern struct cardstack talon;
 extern struct cardstack wastepile;
 extern struct cardstack foundations[4];
+extern struct cardstack tableau[7];
 
 extern char *suit_chars[4];
 extern char *rank_chars[13];
@@ -72,6 +73,50 @@ void reset_talon() {
 		move_card(&talon, wastepile.top, wastepile.top, -1, 1);
 		talon.top->face = DOWN;
 	}
+}
+
+int talon_contains(MEVENT event) {
+	return contains(
+		event.x,
+		event.y,
+		TALON_X + STACK_SPACING,
+		TALON_Y,
+		TALON_X + STACK_SPACING + CARD_WIDTH,
+		TALON_Y + CARD_HEIGHT
+	);
+}
+
+int wastepile_contains(MEVENT event) {
+	return contains(
+		event.x,
+		event.y,
+		WASTE_X + STACK_SPACING,
+		WASTE_Y,
+		WASTE_X + STACK_SPACING + CARD_WIDTH,
+		WASTE_Y + CARD_HEIGHT
+	);
+}
+
+int foundation_contains(MEVENT event, int i) {
+	return contains(
+		event.x,
+		event.y,
+		FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
+		FOUNDATION_Y,
+		FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
+		FOUNDATION_Y + (CARD_HEIGHT - 1)
+	);
+}
+
+int tableau_contains(MEVENT event, int i) {
+	return contains(
+		event.x,
+		event.y,
+		TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
+		TABLEAU_Y,
+		TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
+		TABLEAU_Y + tableau[i].size + (CARD_HEIGHT - 1)
+	);
 }
 
 void draw_empty_stack(int x, int y) {

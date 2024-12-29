@@ -61,11 +61,16 @@ struct cardstack {
 void move_card(struct cardstack *dst, struct card *held, struct card *held_top, int held_i, int held_size);
 
 struct card *init_card(int suit, int rank);
+int contains(int mx, int my, int x1, int y1, int x2, int y2);
 void draw_card(struct card card, int x, int y);
 
 struct cardstack init_stack(int index);
 struct cardstack init_talon();
 void reset_talon();
+int talon_contains(MEVENT event);
+int wastepile_contains(MEVENT event);
+int foundation_contains(MEVENT event, int i);
+int tableau_contains(MEVENT event, int i);
 void draw_stack(struct cardstack stack);
 void draw_talon();
 void draw_waste();

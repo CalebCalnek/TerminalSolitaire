@@ -8,14 +8,11 @@ struct card *held, *held_top;
 int held_i, held_size;
 struct card *deck[52];
 int deck_size;
-struct cardstack tableau[7];
-struct cardstack foundations[4];
+
 struct cardstack talon;
 struct cardstack wastepile;
-
-int contains(int mx, int my, int x1, int y1, int x2, int y2) {
-	return mx >= x1 && mx < x2 && my >= y1 && my < y2;
-}
+struct cardstack foundations[4];
+struct cardstack tableau[7];
 
 void move_card(struct cardstack *dst, struct card *held, struct card *held_top, int held_i, int held_size) {
 	struct card *src;
@@ -50,14 +47,7 @@ void handle_mouse_event(MEVENT event) {
 
 	if (event.bstate & BUTTON1_PRESSED) {
 		/* check click talon*/
-		if (contains(
-			event.x,
-			event.y,
-			TALON_X + STACK_SPACING,
-			TALON_Y,
-			TALON_X + STACK_SPACING + CARD_WIDTH,
-			TALON_Y + CARD_HEIGHT
-		)) {
+		if (talon_contains(event)) {
 			struct card *dst, *src;
 			src = talon.top;
 			dst = wastepile.top;
@@ -86,14 +76,7 @@ void handle_mouse_event(MEVENT event) {
 		}
 
 		/* check click waste */
-		if (wastepile.size > 0 && contains(
-			event.x,
-			event.y,
-			WASTE_X + STACK_SPACING,
-			WASTE_Y,
-			WASTE_X + STACK_SPACING + CARD_WIDTH,
-			WASTE_Y + CARD_HEIGHT
-		)) {
+		if (wastepile.size > 0 && wastepile_contains(event)) {
 			held = wastepile.top;
 			held_top = wastepile.top;
 			held_i = -1;
@@ -103,14 +86,7 @@ void handle_mouse_event(MEVENT event) {
 		/* check click tableau */
 		for (i = 0; i < 7; i++) {
 			if (tableau[i].size == 0) continue;
-			if (contains(
-				event.x,
-				event.y,
-				TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
-				TABLEAU_Y,
-				TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
-				TABLEAU_Y + tableau[i].size + (CARD_HEIGHT - 1)
-			)) {
+			if (tableau_contains(event, i)) {
 				card_i = tableau[i].top;
 				j = tableau[i].size - 1;
 				while (card_i != NULL) {
@@ -135,14 +111,7 @@ void handle_mouse_event(MEVENT event) {
 			// skip check for drop in same stack
 			if (i == held_i) continue;
 
-			if (contains(
-				event.x,
-				event.y,
-				TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
-				TABLEAU_Y,
-				TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
-				TABLEAU_Y + tableau[i].size + (CARD_HEIGHT - 1)
-			)) {
+			if (tableau_contains(event, i)) {
 				move_card(&tableau[i], held, held_top, held_i, held_size);
 				held = NULL;
 				return;
@@ -150,14 +119,7 @@ void handle_mouse_event(MEVENT event) {
 		}
 
 		for (i = 0; i < 4; i++) {
-			if (held_size == 1 && contains(
-				event.x,
-				event.y,
-				FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
-				FOUNDATION_Y,
-				FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
-				FOUNDATION_Y + (CARD_HEIGHT - 1)
-			)) {
+			if (held_size == 1 && foundation_contains(event, i)) {
 				move_card(&foundations[i], held, held_top, held_i, held_size);
 				held = NULL;
 				return;
