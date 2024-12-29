@@ -63,12 +63,7 @@ void handle_mouse_event(MEVENT event) {
 			dst = wastepile.top;
 
 			if (src == NULL) {
-				talon.top = wastepile.top;
-				talon.bottom = wastepile.bottom;
-				talon.size = wastepile.size;
-				wastepile.top = NULL;
-				wastepile.bottom = NULL;
-				wastepile.size = 0;
+				reset_talon();
 				return;
 			}
 

@@ -67,6 +67,13 @@ struct cardstack init_talon() {
 	return newstack;
 }
 
+void reset_talon() {
+	while (wastepile.top != NULL) {
+		move_card(&talon, wastepile.top, wastepile.top, -1, 1);
+		talon.top->face = DOWN;
+	}
+}
+
 void draw_empty_stack(int x, int y) {
 	int i;
 	int end_x = CARD_WIDTH - 1;
@@ -120,14 +127,7 @@ void draw_talon() {
 		return;
 	}
 
-	attron(COLOR_PAIR(4));
-	char *fill_char = "▒";
-	for (int i = 0; i < CARD_HEIGHT; i++) {
-		for (int j = 0; j < CARD_WIDTH; j++) {
-			mvaddstr(y + i, x + j, fill_char);
-		}
-	}
-	attroff(COLOR_PAIR(2));
+	draw_card(*talon.top, x, y);
 }
 
 void draw_waste() {
