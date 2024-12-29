@@ -104,9 +104,10 @@ void draw_stack(struct cardstack stack) {
 	}
 
 	while (card_i != NULL) {
-		draw_card(*card_i, stack.index, card_count);
+		draw_card(*card_i, x, y);
 		card_i = card_i->next;
 		card_count++;
+		y++;
 	}
 }
 
@@ -138,30 +139,7 @@ void draw_waste() {
 		return;
 	}
 
-	int end_x = CARD_WIDTH - 1;
-	int end_y = CARD_HEIGHT - 1;
-	struct card *card = wastepile.top;
-	if (card->rank == TEN) {
-		end_x = CARD_WIDTH - 2;
-	}
-	int mid_x = CARD_WIDTH / 2;
-	int mid_y = CARD_HEIGHT / 2;
-	char *suit = suit_chars[card->suit];
-	char *rank = rank_chars[card->rank];
-
-	attron(COLOR_PAIR(card->suit & 2 ? 3 : 2));
-	char *fill_char = " ";
-	for (int i = 0; i < CARD_HEIGHT; i++) {
-		for (int j = 0; j < CARD_WIDTH; j++) {
-			mvaddstr(y + i, x + j, fill_char);
-		}
-	}
-
-	mvaddstr(y, x, rank);
-	mvaddstr(y + mid_y, x + mid_x, suit);
-	mvaddstr(y + end_y, x + end_x, rank);
-
-	attroff(COLOR_PAIR(2));
+	draw_card(*wastepile.top, x, y);
 }
 
 void draw_foundations(int stack_i) {
@@ -173,28 +151,5 @@ void draw_foundations(int stack_i) {
 		return;
 	}
 
-	int end_x = CARD_WIDTH - 1;
-	int end_y = CARD_HEIGHT - 1;
-	struct card *card = foundations[stack_i].top;
-	if (card->rank == TEN) {
-		end_x = CARD_WIDTH - 2;
-	}
-	int mid_x = CARD_WIDTH / 2;
-	int mid_y = CARD_HEIGHT / 2;
-	char *suit = suit_chars[card->suit];
-	char *rank = rank_chars[card->rank];
-
-	attron(COLOR_PAIR(card->suit & 2 ? 3 : 2));
-	char *fill_char = " ";
-	for (int i = 0; i < CARD_HEIGHT; i++) {
-		for (int j = 0; j < CARD_WIDTH; j++) {
-			mvaddstr(y + i, x + j, fill_char);
-		}
-	}
-
-	mvaddstr(y, x, rank);
-	mvaddstr(y + mid_y, x + mid_x, suit);
-	mvaddstr(y + end_y, x + end_x, rank);
-
-	attroff(COLOR_PAIR(2));
+	draw_card(*foundations[stack_i].top, x, y);
 }

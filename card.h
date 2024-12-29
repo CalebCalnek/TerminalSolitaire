@@ -62,7 +62,7 @@ struct cardstack {
 struct card *init_card(int suit, int rank);
 int mouse_inbounds(int mx, int my, int x1, int y1, int x2, int y2);
 int contact_card(MEVENT event, struct card card);
-void draw_card(struct card card, int stack_i, int card_count);
+void draw_card(struct card card, int x, int y);
 
 struct cardstack init_stack(int index);
 struct cardstack init_talon();
