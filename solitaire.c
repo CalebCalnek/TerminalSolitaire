@@ -16,7 +16,7 @@ struct cardstack tableau[7];
 
 void set_held(struct card *top, struct card *bottom, int size, int i) {
 	held = (struct cardstack *) malloc(sizeof(struct cardstack));
-	*held = (struct cardstack) { top, bottom, size, i};
+	*held = (struct cardstack) { top, bottom, size, i };
 }
 
 void handle_mouse_event(MEVENT event) {
@@ -66,7 +66,9 @@ void handle_mouse_event(MEVENT event) {
 			if (i == held->index) continue;
 
 			if (tableau_contains(event, i)) {
-				move_card(&tableau[i], held);
+				if (can_move(&tableau[i], *held->bottom, i)) {
+					move_card(&tableau[i], held);
+				}
 				free(held);
 				held = NULL;
 				return;
@@ -75,7 +77,9 @@ void handle_mouse_event(MEVENT event) {
 
 		for (i = 0; i < 4; i++) {
 			if (held->size == 1 && foundation_contains(event, i)) {
-				move_card(&foundations[i], held);
+				if (can_move(&foundations[i], *held->bottom, i)) {
+					move_card(&foundations[i], held);
+				}
 				free(held);
 				held = NULL;
 				return;

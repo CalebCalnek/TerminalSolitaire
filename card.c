@@ -12,6 +12,7 @@ char *rank_chars[13] = { "A", "2", "3", "4", "5", "6", "7",
 
 extern struct cardstack talon;
 extern struct cardstack wastepile;
+extern struct cardstack foundations[4];
 extern struct cardstack tableau[7];
 
 struct card *init_card(int suit, int rank) {
@@ -20,6 +21,19 @@ struct card *init_card(int suit, int rank) {
 	newcard->suit = suit;
 	newcard->rank = rank;
 	return newcard;
+}
+
+int can_move(struct cardstack *dst, struct card card, int index) {
+	if (dst == &foundations[index]) {
+		if (dst->size == 0) return card.rank == ACE;
+		return card.suit == dst->top->suit && card.rank == dst->top->rank + 1;
+	} else if (dst == &tableau[index]) {
+		if (dst->size == 0) return card.rank == KING;
+		return (card.suit & 2) != (dst->top->suit & 2) &&
+			card.rank == dst->top->rank - 1;
+	}
+
+	return -1;
 }
 
 void move_card(struct cardstack *dst, struct cardstack *mv_stack) {

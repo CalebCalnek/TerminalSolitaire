@@ -59,6 +59,7 @@ struct cardstack {
 };
 
 struct card *init_card(int suit, int rank);
+int can_move(struct cardstack *dst, struct card card, int index);
 void move_card(struct cardstack *dst, struct cardstack *mv_stack);
 int contains(int mx, int my, int x1, int y1, int x2, int y2);
 void draw_card(struct card card, int x, int y);
