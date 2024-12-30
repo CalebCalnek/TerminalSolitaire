@@ -26,30 +26,12 @@ void handle_mouse_event(MEVENT event) {
 	if (event.bstate & BUTTON1_PRESSED) {
 		/* check click talon*/
 		if (talon_contains(event)) {
-			struct card *dst, *src;
-			src = talon.top;
-			dst = wastepile.top;
-
-			if (src == NULL) {
+			if (talon.size == 0) {
 				reset_talon();
 				return;
 			}
-
-			talon.top = src->prev;
-			talon.size--;
-			if (talon.top != NULL) {
-				talon.top->next = NULL;
-			}
-			if (dst != NULL) {
-				dst->next = src;
-			} else {
-				wastepile.bottom = src;
-			}
-			src->prev = dst;
-			src->face = UP;
-			wastepile.top = src;
-			wastepile.size++;
-
+			struct cardstack card = { talon.top, talon.top, 1, -1 };
+			move_card(&wastepile, &card);
 			return;
 		}
 

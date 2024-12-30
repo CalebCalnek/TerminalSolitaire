@@ -10,6 +10,7 @@ char *suit_chars[4] = { "♣", "♠", "♥", "♦" };
 char *rank_chars[13] = { "A", "2", "3", "4", "5", "6", "7",
 	"8", "9", "10", "J", "Q", "K" };
 
+extern struct cardstack talon;
 extern struct cardstack wastepile;
 extern struct cardstack tableau[7];
 
@@ -21,31 +22,39 @@ struct card *init_card(int suit, int rank) {
 	return newcard;
 }
 
-void move_card(struct cardstack *dst, struct cardstack *mv_card) {
-	struct card *src;
-	struct cardstack *src_stack;
+void move_card(struct cardstack *dst, struct cardstack *mv_stack) {
+	struct card *src_top = mv_stack->bottom->prev;
+	struct cardstack *src;
 
-	src = mv_card->bottom->prev;
-	src_stack = mv_card->bottom == wastepile.top ?
-		&wastepile : &tableau[mv_card->index];
+	if (mv_stack->top == talon.top) {
+		src = &talon;
+	} else if (mv_stack->top == wastepile.top) {
+		src = &wastepile;
+	} else if (mv_stack->top == tableau[mv_stack->index].top) {
+		src = &tableau[mv_stack->index];
+	}
 
 	if (dst->size > 0) {
-		dst->top->next = mv_card->bottom;
-		mv_card->bottom->prev = dst->top;
+		dst->top->next = mv_stack->bottom;
+		mv_stack->bottom->prev = dst->top;
 	} else {
-		dst->bottom = mv_card->bottom;
-		mv_card->bottom->prev = NULL;
+		dst->bottom = mv_stack->bottom;
+		mv_stack->bottom->prev = NULL;
 	}
-	dst->top = mv_card->top;
-	dst->size += mv_card->size;
+	dst->top = mv_stack->top;
+	dst->size += mv_stack->size;
 
-	src_stack->top = src;
-	src_stack->size -= mv_card->size;
-	if (src != NULL) {
-		src_stack->top->face = UP;
-		src_stack->top->next = NULL;
+	src->top = src_top;
+	src->size -= mv_stack->size;
+	if (src == &talon) {
+		dst->top->face = UP;
+	} else if (src == &tableau[mv_stack->index] && src->top != NULL) {
+		src->top->face = UP;
+	}
+	if (src->size > 0) {
+		src->top->next = NULL;
 	} else {
-		src_stack->bottom = NULL;
+		src->bottom = NULL;
 	}
 }
 
