@@ -14,6 +14,8 @@ struct cardstack wastepile;
 struct cardstack foundations[4];
 struct cardstack tableau[7];
 
+int draw_cmdbar;
+
 void set_held(struct card *top, struct card *bottom, int size, int i) {
 	held = (struct cardstack *) malloc(sizeof(struct cardstack));
 	*held = (struct cardstack) { top, bottom, size, i };
@@ -121,7 +123,10 @@ void init(void) {
 	init_pair(2, COLOR_BLACK, COLOR_WHITE);
 	init_pair(3, COLOR_RED, COLOR_WHITE);
 	init_pair(4, COLOR_BLUE, COLOR_WHITE);
+	init_pair(5, COLOR_WHITE, COLOR_BLACK);
 	bkgd(COLOR_PAIR(1));
+
+	draw_cmdbar = 0;
 
 	/* deal cards */
 	init_deck();
@@ -133,7 +138,11 @@ void init(void) {
 
 void draw(void) {
 	int i;
+	int col_end, row_end;
+
 	erase();
+
+	/* draw cardstacks */
 	draw_talon();
 	draw_waste();
 	for (i = 0; i < 4; i++) {
@@ -141,6 +150,15 @@ void draw(void) {
 	}
 	for (i = 0; i < 7; i++) {
 		draw_stack(tableau[i]);
+	}
+
+	if (draw_cmdbar) {
+		getmaxyx(stdscr, row_end, col_end);
+		attron(COLOR_PAIR(5));
+		for (i = 0; i < col_end; i++) {
+			mvaddstr(row_end - 1, i, " ");
+		}
+		attroff(COLOR_PAIR(5));
 	}
 }
 
@@ -158,6 +176,8 @@ int main(void) {
 			if (getmouse(&event) == OK) {
 				handle_mouse_event(event);
 			}
+		} else if ((char) ch == ':') {
+			draw_cmdbar ^= 1;
 		}
 	}
 
