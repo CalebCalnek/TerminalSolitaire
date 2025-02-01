@@ -105,6 +105,10 @@ void draw_card(struct card card, int x, int y) {
 	// draw symbols
 	if (card.face == UP) {
 		mvaddstr(y, x, rank);
+		if (card.next != NULL) {
+			/* card is coverd, draw second suit symbol */
+			mvaddstr(y, x + mid_x + 2, suit);
+		}
 		mvaddstr(y + mid_y, x + mid_x, suit);
 		mvaddstr(y + end_y, x + end_x, rank);
 	}
