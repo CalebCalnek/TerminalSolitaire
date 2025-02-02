@@ -186,10 +186,15 @@ int main(void) {
 			if (getmouse(&event) == OK) {
 				handle_mouse_event(event);
 			}
-		} else if ((char) ch == ':') {
+		} else if (ch == ':') {
 			show_cmdbar ^= 1;
-		} else if (show_cmdbar && cmd_len < 7) {
-			command[cmd_len++] = ch;
+		} else if (show_cmdbar) {
+			/* detect backspace */
+			if (ch == 263 && cmd_len > 0) {
+				command[--cmd_len] = '\0';
+			} else if (cmd_len < 7) {
+				command[cmd_len++] = ch;
+			}
 		}
 	}
 
