@@ -2,6 +2,7 @@
 #include <locale.h>
 #include <stdlib.h>
 #include <time.h>
+#include <string.h>
 #include "card.h"
 
 struct card *deck[52];
@@ -14,8 +15,9 @@ struct cardstack wastepile;
 struct cardstack foundations[4];
 struct cardstack tableau[7];
 
+#define MAX_CMD 8
 int show_cmdbar;
-char command[8];
+char command[MAX_CMD];
 int cmd_len;
 
 void set_held(struct card *top, struct card *bottom, int size, int i) {
@@ -186,13 +188,22 @@ int main(void) {
 			if (getmouse(&event) == OK) {
 				handle_mouse_event(event);
 			}
-		} else if (ch == ':') {
-			show_cmdbar ^= 1;
+		} else if (!show_cmdbar && ch == ':') {
+			show_cmdbar = 1;
 		} else if (show_cmdbar) {
-			/* detect backspace */
-			if (ch == 263 && cmd_len > 0) {
-				command[--cmd_len] = '\0';
-			} else if (cmd_len < 7) {
+			if (ch == 263) {
+				/* detect backspace */
+				if (cmd_len > 0) {
+					command[--cmd_len] = '\0';
+				} else {
+					show_cmdbar = 0;
+				}
+			} else if (ch == '\n')  {
+				/* detect enter */
+				memset(command, '\0', MAX_CMD);
+				cmd_len = 0;
+				show_cmdbar = 0;
+			} else if (cmd_len < MAX_CMD - 1) {
 				command[cmd_len++] = ch;
 			}
 		}
