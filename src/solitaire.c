@@ -181,7 +181,7 @@ int main(void) {
 	init();
 
 	/* game loop */
-	while (ch != 'q') {
+	while (1) {
 		draw();
 		ch = getch();
 		if (ch == KEY_MOUSE) {
@@ -200,6 +200,10 @@ int main(void) {
 				}
 			} else if (ch == '\n')  {
 				/* detect enter */
+				if (strcmp(command, "q") == 0) {
+					/* detect quit command */
+					break;
+				}
 				memset(command, '\0', MAX_CMD);
 				cmd_len = 0;
 				show_cmdbar = 0;
