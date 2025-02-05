@@ -2,7 +2,7 @@ CC = gcc
 CFLAGS = -Wall -g -I.
 LDFLAGS = -lncursesw
 
-SRC = src/solitaire.c src/card.c src/cardstack.c
+SRC = src/solitaire.c src/card.c src/cardstack.c src/command.c
 
 .PHONY: all clean
 

@@ -20,6 +20,8 @@
 #define DOWN 0
 #define UP 1
 
+#define MAX_CMD 8
+
 #define RAND(n) (rand() % (n))
 
 enum suit {
@@ -75,5 +77,7 @@ void draw_stack(struct cardstack stack);
 void draw_talon();
 void draw_waste();
 void draw_foundations(int stack_i);
+
+int handle_keyboard(char ch);
 
 #endif

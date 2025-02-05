@@ -15,7 +15,6 @@ struct cardstack wastepile;
 struct cardstack foundations[4];
 struct cardstack tableau[7];
 
-#define MAX_CMD 8
 int show_cmdbar;
 char command[MAX_CMD];
 int cmd_len;
@@ -188,27 +187,9 @@ int main(void) {
 			if (getmouse(&event) == OK) {
 				handle_mouse_event(event);
 			}
-		} else if (!show_cmdbar && ch == ':') {
-			show_cmdbar = 1;
-		} else if (show_cmdbar) {
-			if (ch == 263) {
-				/* detect backspace */
-				if (cmd_len > 0) {
-					command[--cmd_len] = '\0';
-				} else {
-					show_cmdbar = 0;
-				}
-			} else if (ch == '\n')  {
-				/* detect enter */
-				if (strcmp(command, "q") == 0) {
-					/* detect quit command */
-					break;
-				}
-				memset(command, '\0', MAX_CMD);
-				cmd_len = 0;
-				show_cmdbar = 0;
-			} else if (cmd_len < MAX_CMD - 1) {
-				command[cmd_len++] = ch;
+		} else {
+			if (handle_keyboard(ch)) {
+				break;
 			}
 		}
 	}
