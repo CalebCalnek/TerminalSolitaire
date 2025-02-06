@@ -2,9 +2,31 @@
 #include <string.h>
 #include "card.h"
 
-extern int show_cmdbar;
-extern char command[MAX_CMD];
-extern int cmd_len;
+#define MAX_CMD 8
+
+int show_cmdbar;
+char command[MAX_CMD];
+int cmd_len;
+
+void init_cmdbar() {
+	show_cmdbar = 0;
+	cmd_len = 0;
+}
+
+void draw_cmdbar() {
+	int i, col_end, row_end;
+
+	if (!show_cmdbar) return;
+
+	getmaxyx(stdscr, row_end, col_end);
+	attron(COLOR_PAIR(5));
+	for (i = 0; i < col_end; i++) {
+		mvaddstr(row_end - 1, i, " ");
+	}
+	mvaddch(row_end - 1, 0, ':');
+	mvaddstr(row_end - 1, 1, command);
+	attroff(COLOR_PAIR(5));
+}
 
 int handle_keyboard(char ch) {
 	if (!show_cmdbar) {

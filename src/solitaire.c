@@ -15,10 +15,6 @@ struct cardstack wastepile;
 struct cardstack foundations[4];
 struct cardstack tableau[7];
 
-int show_cmdbar;
-char command[MAX_CMD];
-int cmd_len;
-
 void set_held(struct card *top, struct card *bottom, int size, int i) {
 	held = (struct cardstack *) malloc(sizeof(struct cardstack));
 	*held = (struct cardstack) { top, bottom, size, i };
@@ -129,8 +125,7 @@ void init(void) {
 	init_pair(5, COLOR_WHITE, COLOR_BLACK);
 	bkgd(COLOR_PAIR(1));
 
-	show_cmdbar = 0;
-	cmd_len = 0;
+	init_cmdbar();
 
 	/* deal cards */
 	init_deck();
@@ -138,19 +133,6 @@ void init(void) {
 		tableau[i] = init_stack(i);
 	}
 	talon = init_talon();
-}
-
-void draw_cmdbar() {
-	int i, col_end, row_end;
-
-	getmaxyx(stdscr, row_end, col_end);
-	attron(COLOR_PAIR(5));
-	for (i = 0; i < col_end; i++) {
-		mvaddstr(row_end - 1, i, " ");
-	}
-	mvaddch(row_end - 1, 0, ':');
-	mvaddstr(row_end - 1, 1, command);
-	attroff(COLOR_PAIR(5));
 }
 
 void draw(void) {
@@ -167,10 +149,7 @@ void draw(void) {
 	for (i = 0; i < 7; i++) {
 		draw_stack(tableau[i]);
 	}
-
-	if (show_cmdbar) {
-		draw_cmdbar();
-	}
+	draw_cmdbar();
 }
 
 int main(void) {
