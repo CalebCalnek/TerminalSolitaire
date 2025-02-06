@@ -5,9 +5,6 @@
 #include <string.h>
 #include "card.h"
 
-struct card *deck[52];
-int deck_size;
-
 struct cardstack *held;
 
 struct cardstack talon;
@@ -89,17 +86,6 @@ void handle_mouse_event(MEVENT event) {
 
 		free(held);
 		held = NULL;
-	}
-}
-
-void init_deck(void) {
-	int rank_i, suit_i;
-
-	deck_size = 52;
-	for (suit_i = 0; suit_i < 4; suit_i++) {
-		for (rank_i = 0; rank_i < 13; rank_i++) {
-			deck[suit_i * 13 + rank_i] = init_card(suit_i, rank_i);
-		}
 	}
 }
 

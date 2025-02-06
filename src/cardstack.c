@@ -2,9 +2,6 @@
 #include <stdlib.h>
 #include "card.h"
 
-extern struct card *deck[52];
-extern int deck_size;
-
 extern struct cardstack talon;
 extern struct cardstack wastepile;
 extern struct cardstack foundations[4];
@@ -13,24 +10,16 @@ extern struct cardstack tableau[7];
 extern char *suit_chars[4];
 extern char *rank_chars[13];
 
-struct card *deck_select() {
-	int rand_index = RAND(deck_size);
-	struct card *card_i = deck[rand_index];
-	deck[rand_index] = deck[deck_size - 1];
-	deck[deck_size - 1] = NULL;
-	deck_size--;
-	return card_i;
-}
-
 struct cardstack init_stack(int index) {
 	struct cardstack newstack;
+	struct card *card_i;
 
 	newstack.top = NULL;
 	newstack.index = index;
 	newstack.size = 0;
 
 	for (int i = index; i >= 0; i--) {
-		struct card *card_i = deck_select();
+		card_i = deck_select();
 		card_i->face = i == 0 ? UP : DOWN;
 		if (newstack.top != NULL) {
 			card_i->prev = newstack.top;
@@ -47,13 +36,13 @@ struct cardstack init_stack(int index) {
 
 struct cardstack init_talon() {
 	struct cardstack newstack;
+	struct card *card_i;
 
 	newstack.top = NULL;
 	newstack.index = -1;
 	newstack.size = 0;
 
-	while (deck[0] != NULL) {
-		struct card *card_i = deck_select();
+	while ((card_i = deck_select()) != NULL) {
 		card_i->face = DOWN;
 		if (newstack.top != NULL) {
 			card_i->prev = newstack.top;
