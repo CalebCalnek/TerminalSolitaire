@@ -82,6 +82,10 @@ void draw_foundations(int stack_i);
 void init_deck(void);
 struct card *deck_select();
 
+/* mouse */
+void set_held(struct card *top, struct card *bottom, int size, int i);
+void handle_mouse_event(MEVENT event);
+
 /* command */
 void init_cmdbar();
 void draw_cmdbar();
