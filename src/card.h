@@ -66,17 +66,20 @@ int contains(int mx, int my, int x1, int y1, int x2, int y2);
 void draw_card(struct card card, int x, int y);
 
 /* cardstack */
-void init_stack(int index);
 void init_talon();
 void reset_talon();
 int talon_contains(MEVENT event);
 int wastepile_contains(MEVENT event);
 int foundation_contains(MEVENT event, int i);
-int tableau_contains(MEVENT event, int i);
-void draw_tableau(int stack_i);
+void draw_empty_stack(int x, int y);
 void draw_talon();
 void draw_waste();
 void draw_foundations(int stack_i);
+
+/* tableau */
+void init_tableau(int index);
+int tableau_contains(MEVENT event, int i);
+void draw_tableau(int stack_i);
 
 /* deck */
 void init_deck(void);

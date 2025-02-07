@@ -5,34 +5,7 @@
 struct cardstack talon;
 struct cardstack wastepile;
 struct cardstack foundations[4];
-struct cardstack tableau[7];
-
-extern char *suit_chars[4];
-extern char *rank_chars[13];
-
-void init_stack(int index) {
-	struct cardstack newstack;
-	struct card *card_i;
-
-	newstack.top = NULL;
-	newstack.index = index;
-	newstack.size = 0;
-
-	for (int i = index; i >= 0; i--) {
-		card_i = deck_select();
-		card_i->face = i == 0 ? UP : DOWN;
-		if (newstack.top != NULL) {
-			card_i->prev = newstack.top;
-			newstack.top->next = card_i;
-		} else {
-			newstack.bottom = card_i;
-		}
-		newstack.top = card_i;
-		newstack.size++;
-	}
-
-	tableau[index] = newstack;
-}
+/* struct cardstack tableau[7]; */
 
 void init_talon() {
 	struct cardstack newstack;
@@ -98,17 +71,6 @@ int foundation_contains(MEVENT event, int i) {
 	);
 }
 
-int tableau_contains(MEVENT event, int i) {
-	return contains(
-		event.x,
-		event.y,
-		TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
-		TABLEAU_Y,
-		TABLEAU_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
-		TABLEAU_Y + tableau[i].size + (CARD_HEIGHT - 1)
-	);
-}
-
 void draw_empty_stack(int x, int y) {
 	int i;
 	int end_x = CARD_WIDTH - 1;
@@ -127,29 +89,6 @@ void draw_empty_stack(int x, int y) {
 	mvaddstr(y, x + end_x, "┐");
 	mvaddstr(y + end_y, x, "└");
 	mvaddstr(y + end_y, x + end_x, "┘");
-}
-
-void draw_tableau(int stack_i) {
-	struct card *card_i;
-	int card_count;
-
-	card_i = tableau[stack_i].bottom;
-	card_count = 0;
-
-	int x = TABLEAU_X + STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
-	int y = TABLEAU_Y + card_count;
-
-	if (card_i == NULL) {
-		draw_empty_stack(x, y);
-		return;
-	}
-
-	while (card_i != NULL) {
-		draw_card(*card_i, x, y);
-		card_i = card_i->next;
-		card_count++;
-		y++;
-	}
 }
 
 void draw_talon() {

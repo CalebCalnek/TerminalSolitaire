@@ -32,7 +32,7 @@ void init(void) {
 	/* deal cards */
 	init_deck();
 	for (int i = 0; i < 7; i++) {
-		init_stack(i);
+		init_tableau(i);
 	}
 	init_talon();
 }
