@@ -70,10 +70,12 @@ void init_talon();
 void reset_talon();
 int talon_contains(MEVENT event);
 int wastepile_contains(MEVENT event);
-int foundation_contains(MEVENT event, int i);
 void draw_empty_stack(int x, int y);
 void draw_talon();
 void draw_waste();
+
+/* foundations */
+int foundation_contains(MEVENT event, int i);
 void draw_foundations(int stack_i);
 
 /* tableau */

@@ -4,7 +4,7 @@
 
 struct cardstack talon;
 struct cardstack wastepile;
-struct cardstack foundations[4];
+/* struct cardstack foundations[4]; */
 /* struct cardstack tableau[7]; */
 
 void init_talon() {
@@ -60,17 +60,6 @@ int wastepile_contains(MEVENT event) {
 	);
 }
 
-int foundation_contains(MEVENT event, int i) {
-	return contains(
-		event.x,
-		event.y,
-		FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * i,
-		FOUNDATION_Y,
-		FOUNDATION_X + STACK_SPACING * (i + 1) + CARD_WIDTH * (i + 1),
-		FOUNDATION_Y + CARD_HEIGHT
-	);
-}
-
 void draw_empty_stack(int x, int y) {
 	int i;
 	int end_x = CARD_WIDTH - 1;
@@ -113,16 +102,4 @@ void draw_waste() {
 	}
 
 	draw_card(*wastepile.top, x, y);
-}
-
-void draw_foundations(int stack_i) {
-	int x = FOUNDATION_X + STACK_SPACING * (stack_i+1) + CARD_WIDTH * stack_i;
-	int y = FOUNDATION_Y;
-
-	if (foundations[stack_i].size == 0) {
-		draw_empty_stack(x, y);
-		return;
-	}
-
-	draw_card(*foundations[stack_i].top, x, y);
 }
