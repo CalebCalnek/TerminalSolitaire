@@ -5,11 +5,6 @@
 #include <string.h>
 #include "card.h"
 
-struct cardstack talon;
-struct cardstack wastepile;
-struct cardstack foundations[4];
-struct cardstack tableau[7];
-
 void init(void) {
 	setlocale(LC_ALL, "");
 	initscr();
@@ -37,9 +32,9 @@ void init(void) {
 	/* deal cards */
 	init_deck();
 	for (int i = 0; i < 7; i++) {
-		tableau[i] = init_stack(i);
+		init_stack(i);
 	}
-	talon = init_talon();
+	init_talon();
 }
 
 void draw(void) {
@@ -54,7 +49,7 @@ void draw(void) {
 		draw_foundations(i);
 	}
 	for (i = 0; i < 7; i++) {
-		draw_stack(tableau[i]);
+		draw_tableau(i);
 	}
 	draw_cmdbar();
 }

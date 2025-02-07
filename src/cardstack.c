@@ -2,15 +2,15 @@
 #include <stdlib.h>
 #include "card.h"
 
-extern struct cardstack talon;
-extern struct cardstack wastepile;
-extern struct cardstack foundations[4];
-extern struct cardstack tableau[7];
+struct cardstack talon;
+struct cardstack wastepile;
+struct cardstack foundations[4];
+struct cardstack tableau[7];
 
 extern char *suit_chars[4];
 extern char *rank_chars[13];
 
-struct cardstack init_stack(int index) {
+void init_stack(int index) {
 	struct cardstack newstack;
 	struct card *card_i;
 
@@ -31,10 +31,10 @@ struct cardstack init_stack(int index) {
 		newstack.size++;
 	}
 
-	return newstack;
+	tableau[index] = newstack;
 }
 
-struct cardstack init_talon() {
+void init_talon() {
 	struct cardstack newstack;
 	struct card *card_i;
 
@@ -54,7 +54,7 @@ struct cardstack init_talon() {
 		newstack.size++;
 	}
 
-	return newstack;
+	talon = newstack;
 }
 
 void reset_talon() {
@@ -129,12 +129,11 @@ void draw_empty_stack(int x, int y) {
 	mvaddstr(y + end_y, x + end_x, "┘");
 }
 
-void draw_stack(struct cardstack stack) {
+void draw_tableau(int stack_i) {
 	struct card *card_i;
-	int card_count, stack_i;
+	int card_count;
 
-	card_i = stack.bottom;
-	stack_i = stack.index;
+	card_i = tableau[stack_i].bottom;
 	card_count = 0;
 
 	int x = TABLEAU_X + STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
