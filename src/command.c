@@ -3,6 +3,11 @@
 #include <regex.h>
 #include "card.h"
 
+extern struct cardstack talon;
+extern struct cardstack wastepile;
+extern struct cardstack foundations[4];
+extern struct cardstack tableau[7];
+
 #define MAX_CMD 8
 
 int show_cmdbar;
@@ -29,33 +34,27 @@ void draw_cmdbar() {
 	attroff(COLOR_PAIR(5));
 }
 
+void extract_value(regmatch_t match, char *buffer) {
+	int start, end;
+	start = match.rm_so;
+	end = match.rm_eo;
+	snprintf(buffer, end - start + 1, "%s", command + start);
+}
+
 void mv_cmd() {
 	regex_t regex;
 	regmatch_t matches[5];
 	char *pattern = "^([2-9]|10|[ajqk])([cdhs]) (t|f)([1-7])$";
 	regcomp(&regex, pattern, REG_EXTENDED);
 	if (regexec(&regex, command, 5, matches, 0) == 0) {
-		char src_rank[3];
-		char src_suit[2];
-		char dst_stack[2];
-		char dst_i[2];
-		int start, end;
+		char src_rank[3], src_suit[2], dst_stack[2], dst_i[2];
 
-		start = matches[1].rm_so;
-		end = matches[1].rm_eo;
-		snprintf(src_rank, end - start + 1, "%s", command + start);
+		extract_value(matches[1], src_rank);
+		extract_value(matches[2], src_suit);
+		extract_value(matches[3], dst_stack);
+		extract_value(matches[4], dst_i);
 
-		start = matches[2].rm_so;
-		end = matches[2].rm_eo;
-		snprintf(src_suit, end - start + 1, "%s", command + start);
-
-		start = matches[3].rm_so;
-		end = matches[3].rm_eo;
-		snprintf(dst_stack, end - start + 1, "%s", command + start);
-
-		start = matches[4].rm_so;
-		end = matches[4].rm_eo;
-		snprintf(dst_i, end - start + 1, "%s", command + start);
+		/* printf("\n%s%s%s%s\n", src_rank, src_suit, dst_stack, dst_i); */
 	}
 
 	regfree(&regex);
