@@ -45,15 +45,18 @@ void extract_value(regmatch_t match, char *buffer) {
 void exec_cmd(char *args[]) {
 	char *src_rank = args[0];
 	char *src_suit = args[1];
-	char *dst_stack = args[2];
+	cardstack_t *dst_stack;
+	switch (args[2][0]) {
+		case 't': dst_stack = tableau; break;
+		case 'f': dst_stack = foundations; break;
+		default: return;
+	}
 	int dst_i = strtol(args[3], NULL, 10) - 1;
-	if (can_move(&tableau[dst_i], *wastepile.top, dst_i)) {
+
+	if (can_move(&dst_stack[dst_i], *wastepile.top, dst_i)) {
 		cardstack_t card;
-		card.top = wastepile.top;
-		card.bottom = wastepile.top;
-		card.size = 1;
-		card.index = -1;
-		move_card(&tableau[dst_i], &card);
+		card = (cardstack_t) { wastepile.top, wastepile.top, 1, -1 };
+		move_card(&dst_stack[dst_i], &card);
 	}
 }
 
@@ -72,7 +75,6 @@ void parse_cmd() {
 
 		char *exec_args[] = { src_rank, src_suit, dst_stack, dst_i };
 		exec_cmd(exec_args);
-		/* printf("\n%s%s%s%s\n", src_rank, src_suit, dst_stack, dst_i); */
 	}
 
 	regfree(&regex);
