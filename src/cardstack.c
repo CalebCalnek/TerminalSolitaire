@@ -38,6 +38,15 @@ void reset_talon() {
 	}
 }
 
+void pop_talon() {
+	if (talon.size == 0) {
+		reset_talon();
+		return;
+	}
+	struct cardstack card = { talon.top, talon.top, 1, -1 };
+	move_card(&wastepile, &card);
+}
+
 int talon_contains(MEVENT event) {
 	return contains(
 		event.x,

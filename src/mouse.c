@@ -21,12 +21,7 @@ void handle_mouse_event(MEVENT event) {
 	if (event.bstate & BUTTON1_PRESSED) {
 		/* check click talon*/
 		if (talon_contains(event)) {
-			if (talon.size == 0) {
-				reset_talon();
-				return;
-			}
-			struct cardstack card = { talon.top, talon.top, 1, -1 };
-			move_card(&wastepile, &card);
+			pop_talon();
 			return;
 		}
 

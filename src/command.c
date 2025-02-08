@@ -49,6 +49,10 @@ int handle_keyboard(char ch) {
 			/* detect quit command */
 			return 1;
 		}
+		if (strcmp(command, "talon") == 0) {
+			/* draw from talon */
+			pop_talon();
+		}
 		memset(command, '\0', MAX_CMD);
 		cmd_len = 0;
 		show_cmdbar = 0;

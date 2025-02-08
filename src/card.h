@@ -68,6 +68,7 @@ void draw_card(struct card card, int x, int y);
 /* cardstack */
 void init_talon();
 void reset_talon();
+void pop_talon();
 int talon_contains(MEVENT event);
 int wastepile_contains(MEVENT event);
 void draw_empty_stack(int x, int y);
