@@ -2,14 +2,14 @@
 #include <stdlib.h>
 #include "card.h"
 
-struct cardstack talon;
-struct cardstack wastepile;
-/* struct cardstack foundations[4]; */
-/* struct cardstack tableau[7]; */
+cardstack_t talon;
+cardstack_t wastepile;
+/* cardstack_t foundations[4]; */
+/* cardstack_t tableau[7]; */
 
 void init_talon() {
-	struct cardstack newstack;
-	struct card *card_i;
+	cardstack_t newstack;
+	card_t *card_i;
 
 	newstack.top = NULL;
 	newstack.index = -1;
@@ -32,7 +32,7 @@ void init_talon() {
 
 void reset_talon() {
 	while (wastepile.top != NULL) {
-		struct cardstack card = { wastepile.top, wastepile.top, 1, -1 };
+		cardstack_t card = { wastepile.top, wastepile.top, 1, -1 };
 		move_card(&talon, &card);
 		talon.top->face = DOWN;
 	}
@@ -43,7 +43,7 @@ void pop_talon() {
 		reset_talon();
 		return;
 	}
-	struct cardstack card = { talon.top, talon.top, 1, -1 };
+	cardstack_t card = { talon.top, talon.top, 1, -1 };
 	move_card(&wastepile, &card);
 }
 

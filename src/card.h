@@ -45,25 +45,26 @@ enum rank {
 	KING,
 };
 
-struct card {
+typedef struct card_t card_t;
+struct card_t {
 	enum suit suit;
 	enum rank rank;
-	struct card *next, *prev;
+	card_t *next, *prev;
 	int face;
 };
 
-struct cardstack {
-	struct card *top, *bottom;
+typedef struct {
+	card_t *top, *bottom;
 	int size;
 	int index;
-};
+} cardstack_t;
 
 /* card */
-struct card *init_card(int suit, int rank);
-int can_move(struct cardstack *dst, struct card card, int index);
-void move_card(struct cardstack *dst, struct cardstack *mv_stack);
+card_t *init_card(int suit, int rank);
+int can_move(cardstack_t *dst, card_t card, int index);
+void move_card(cardstack_t *dst, cardstack_t *mv_stack);
 int contains(int mx, int my, int x1, int y1, int x2, int y2);
-void draw_card(struct card card, int x, int y);
+void draw_card(card_t card, int x, int y);
 
 /* cardstack */
 void init_talon();
@@ -86,10 +87,10 @@ void draw_tableau(int stack_i);
 
 /* deck */
 void init_deck(void);
-struct card *deck_select();
+card_t *deck_select();
 
 /* mouse */
-void set_held(struct card *top, struct card *bottom, int size, int i);
+void set_held(card_t *top, card_t *bottom, int size, int i);
 void handle_mouse_event(MEVENT event);
 
 /* command */

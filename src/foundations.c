@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "card.h"
 
-struct cardstack foundations[4];
+cardstack_t foundations[4];
 
 int foundation_contains(MEVENT event, int i) {
 	return contains(

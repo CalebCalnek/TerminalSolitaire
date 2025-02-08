@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "card.h"
 
-struct card *deck[52];
+card_t *deck[52];
 int deck_size;
 
 void init_deck(void) {
@@ -16,9 +16,9 @@ void init_deck(void) {
 	}
 }
 
-struct card *deck_select() {
+card_t *deck_select() {
 	int rand_index;
-	struct card *card_i;
+	card_t *card_i;
 
 	if (deck_size == 0) return NULL;
 

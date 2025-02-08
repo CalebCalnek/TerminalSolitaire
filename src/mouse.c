@@ -2,21 +2,21 @@
 #include <stdlib.h>
 #include "card.h"
 
-struct cardstack *held;
+cardstack_t *held;
 
-extern struct cardstack talon;
-extern struct cardstack wastepile;
-extern struct cardstack foundations[4];
-extern struct cardstack tableau[7];
+extern cardstack_t talon;
+extern cardstack_t wastepile;
+extern cardstack_t foundations[4];
+extern cardstack_t tableau[7];
 
-void set_held(struct card *top, struct card *bottom, int size, int i) {
-	held = (struct cardstack *) malloc(sizeof(struct cardstack));
-	*held = (struct cardstack) { top, bottom, size, i };
+void set_held(card_t *top, card_t *bottom, int size, int i) {
+	held = (cardstack_t *) malloc(sizeof(cardstack_t));
+	*held = (cardstack_t) { top, bottom, size, i };
 }
 
 void handle_mouse_event(MEVENT event) {
 	int i, j;
-	struct card *card_i;
+	card_t *card_i;
 
 	if (event.bstate & BUTTON1_PRESSED) {
 		/* check click talon*/

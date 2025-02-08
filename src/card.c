@@ -10,20 +10,20 @@ char *suit_chars[4] = { "♣", "♠", "♥", "♦" };
 char *rank_chars[13] = { "A", "2", "3", "4", "5", "6", "7",
 	"8", "9", "10", "J", "Q", "K" };
 
-extern struct cardstack talon;
-extern struct cardstack wastepile;
-extern struct cardstack foundations[4];
-extern struct cardstack tableau[7];
+extern cardstack_t talon;
+extern cardstack_t wastepile;
+extern cardstack_t foundations[4];
+extern cardstack_t tableau[7];
 
-struct card *init_card(int suit, int rank) {
-	struct card *newcard;
-	newcard = (struct card *) malloc(sizeof(struct card));
+card_t *init_card(int suit, int rank) {
+	card_t *newcard;
+	newcard = (card_t *) malloc(sizeof(card_t));
 	newcard->suit = suit;
 	newcard->rank = rank;
 	return newcard;
 }
 
-int can_move(struct cardstack *dst, struct card card, int index) {
+int can_move(cardstack_t *dst, card_t card, int index) {
 	if (dst == &foundations[index]) {
 		if (dst->size == 0) return card.rank == ACE;
 		return card.suit == dst->top->suit && card.rank == dst->top->rank + 1;
@@ -36,9 +36,9 @@ int can_move(struct cardstack *dst, struct card card, int index) {
 	return -1;
 }
 
-void move_card(struct cardstack *dst, struct cardstack *mv_stack) {
-	struct card *src_top = mv_stack->bottom->prev;
-	struct cardstack *src;
+void move_card(cardstack_t *dst, cardstack_t *mv_stack) {
+	card_t *src_top = mv_stack->bottom->prev;
+	cardstack_t *src;
 
 	if (mv_stack->top == talon.top) {
 		src = &talon;
@@ -76,7 +76,7 @@ int contains(int mx, int my, int x1, int y1, int x2, int y2) {
 	return mx >= x1 && mx < x2 && my >= y1 && my < y2;
 }
 
-void draw_card(struct card card, int x, int y) {
+void draw_card(card_t card, int x, int y) {
 	char *suit = suit_chars[card.suit];
 	char *rank = rank_chars[card.rank];
 

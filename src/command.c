@@ -4,10 +4,10 @@
 #include <regex.h>
 #include "card.h"
 
-extern struct cardstack talon;
-extern struct cardstack wastepile;
-extern struct cardstack foundations[4];
-extern struct cardstack tableau[7];
+extern cardstack_t talon;
+extern cardstack_t wastepile;
+extern cardstack_t foundations[4];
+extern cardstack_t tableau[7];
 
 #define MAX_CMD 8
 
@@ -44,8 +44,8 @@ void extract_value(regmatch_t match, char *buffer) {
 
 void exec_cmd(char *src_rank, char *src_suit, char *dst_stack, char * dst_i) {
 	if (can_move(&tableau[atoi(dst_i) - 1], *wastepile.top, atoi(dst_i) - 1)) {
-		struct cardstack *card = (struct cardstack *) malloc(sizeof(struct cardstack));
-		*card = (struct cardstack) { wastepile.top, wastepile.top, 1, -1 };
+		cardstack_t *card = (cardstack_t *) malloc(sizeof(cardstack_t));
+		*card = (cardstack_t) { wastepile.top, wastepile.top, 1, -1 };
 		move_card(
 			&tableau[atoi(dst_i) - 1],
 			card

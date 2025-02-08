@@ -2,11 +2,11 @@
 #include <stdlib.h>
 #include "card.h"
 
-struct cardstack tableau[7];
+cardstack_t tableau[7];
 
 void init_tableau(int index) {
-	struct cardstack newstack;
-	struct card *card_i;
+	cardstack_t newstack;
+	card_t *card_i;
 
 	newstack.top = NULL;
 	newstack.index = index;
@@ -40,7 +40,7 @@ int tableau_contains(MEVENT event, int i) {
 }
 
 void draw_tableau(int stack_i) {
-	struct card *card_i;
+	card_t *card_i;
 	int card_count;
 
 	card_i = tableau[stack_i].bottom;
