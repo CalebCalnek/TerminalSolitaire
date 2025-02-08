@@ -1,4 +1,5 @@
 #include <curses.h>
+#include <stdlib.h>
 #include <string.h>
 #include <regex.h>
 #include "card.h"
@@ -41,7 +42,19 @@ void extract_value(regmatch_t match, char *buffer) {
 	snprintf(buffer, end - start + 1, "%s", command + start);
 }
 
-void mv_cmd() {
+void exec_cmd(char *src_rank, char *src_suit, char *dst_stack, char * dst_i) {
+	if (can_move(&tableau[atoi(dst_i) - 1], *wastepile.top, atoi(dst_i) - 1)) {
+		struct cardstack *card = (struct cardstack *) malloc(sizeof(struct cardstack));
+		*card = (struct cardstack) { wastepile.top, wastepile.top, 1, -1 };
+		move_card(
+			&tableau[atoi(dst_i) - 1],
+			card
+		);
+		free(card);
+	}
+}
+
+void parse_cmd() {
 	regex_t regex;
 	regmatch_t matches[5];
 	char *pattern = "^([2-9]|10|[ajqk])([cdhs]) (t|f)([1-7])$";
@@ -54,6 +67,7 @@ void mv_cmd() {
 		extract_value(matches[3], dst_stack);
 		extract_value(matches[4], dst_i);
 
+		exec_cmd(src_rank, src_suit, dst_stack, dst_i);
 		/* printf("\n%s%s%s%s\n", src_rank, src_suit, dst_stack, dst_i); */
 	}
 
@@ -84,7 +98,7 @@ int handle_keyboard(char ch) {
 			/* draw from talon */
 			pop_talon();
 		} else {
-			mv_cmd();
+			parse_cmd();
 		}
 		memset(command, '\0', MAX_CMD);
 		cmd_len = 0;
