@@ -61,8 +61,11 @@ typedef struct {
 
 /* card */
 card_t *init_card(int suit, int rank);
+int compare_card(card_t card1, enum rank rank2, enum suit suit2);
 int can_move(cardstack_t *dst, card_t card, int index);
 void move_card(cardstack_t *dst, cardstack_t *mv_stack);
+enum rank str_to_rank(char *rank_str);
+enum suit str_to_suit(char *suit_str);
 int contains(int mx, int my, int x1, int y1, int x2, int y2);
 void draw_card(card_t card, int x, int y);
 

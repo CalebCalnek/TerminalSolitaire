@@ -23,6 +23,10 @@ card_t *init_card(int suit, int rank) {
 	return newcard;
 }
 
+int compare_card(card_t card1, enum rank rank2, enum suit suit2) {
+	return (card1.rank == rank2) && (card1.suit == suit2);
+}
+
 int can_move(cardstack_t *dst, card_t card, int index) {
 	if (dst == &foundations[index]) {
 		if (dst->size == 0) return card.rank == ACE;
@@ -69,6 +73,35 @@ void move_card(cardstack_t *dst, cardstack_t *mv_stack) {
 		src->top->next = NULL;
 	} else {
 		src->bottom = NULL;
+	}
+}
+
+enum rank str_to_rank(char *rank_str) {
+	switch (rank_str[0]) {
+		case 'a': return ACE; break;
+		case '2': return TWO; break;
+		case '3': return THREE; break;
+		case '4': return FOUR; break;
+		case '5': return FIVE; break;
+		case '6': return SIX; break;
+		case '7': return SEVEN; break;
+		case '8': return EIGHT; break;
+		case '9': return NINE; break;
+		case '1': return TEN; break;
+		case 'j': return JACK; break;
+		case 'q': return QUEEN; break;
+		case 'k': return KING; break;
+		default: return -1;
+	}
+}
+
+enum suit str_to_suit(char *suit_str) {
+	switch (suit_str[0]) {
+		case 'c': return CLUBS; break;
+		case 's': return SPADES; break;
+		case 'h': return HEARTS; break;
+		case 'd': return DIAMONDS; break;
+		default: return -1;
 	}
 }
 
