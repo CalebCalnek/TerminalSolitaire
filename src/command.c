@@ -75,12 +75,29 @@ void exec_cmd(char *args[]) {
 	if (src_card.size == 0) return;
 
 	cardstack_t *dst_stack;
+	int dst_i;
 	switch (args[2][0]) {
 		case 't': dst_stack = tableau; break;
 		case 'f': dst_stack = foundations; break;
+		case '\0':
+			int i;
+			for (i = 0; i < 7; i++) {
+				if (i == src_card.index) continue;
+				if (can_move(&tableau[i], *src_card.bottom, i)) {
+					move_card(&tableau[i], &src_card);
+					return;
+				}
+			}
+			for (i = 0; i < 4; i++) {
+				if (can_move(&foundations[i], *src_card.bottom, i)) {
+					move_card(&foundations[i], &src_card);
+					return;
+				}
+			}
+			return;
 		default: return;
 	}
-	int dst_i = strtol(args[3], NULL, 10) - 1;
+	dst_i = strtol(args[3], NULL, 10) - 1;
 	if (dst_stack == foundations && dst_i > 3) return;
 
 	if (can_move(&dst_stack[dst_i], *src_card.bottom, dst_i)) {
@@ -91,7 +108,7 @@ void exec_cmd(char *args[]) {
 void parse_cmd() {
 	regex_t regex;
 	regmatch_t matches[5];
-	char *pattern = "^([2-9]|10|[ajqk])([cdhs]) (t|f)([1-7])$";
+	char *pattern = "^([2-9]|10|[ajqk])([cdhs]) ?(t|f)?([1-7])?$";
 	regcomp(&regex, pattern, REG_EXTENDED);
 	if (regexec(&regex, command, 5, matches, 0) == 0) {
 		char src_rank[3], src_suit[2], dst_stack[2], dst_i[2];
