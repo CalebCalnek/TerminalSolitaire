@@ -74,30 +74,39 @@ void exec_cmd(char *args[]) {
 	}
 	if (src_card.size == 0) return;
 
-	cardstack_t *dst_stack;
-	int dst_i;
+	cardstack_t *dst_stack = NULL;
+	int dst_i = -1;
+
+	/* assume auto-move */
+	int i;
+	for (i = 0; i < 7; i++) {
+		if (i == src_card.index) continue;
+		if (can_move(&tableau[i], *src_card.bottom, i)) {
+			dst_stack = tableau;
+			dst_i = i;
+			break;
+		}
+	}
+	for (i = 0; i < 4; i++) {
+		if (dst_stack != NULL && args[2][0] != 'f') break;
+		if (can_move(&foundations[i], *src_card.bottom, i)) {
+			dst_stack = foundations;
+			dst_i = i;
+			break;
+		}
+	}
+	if (dst_stack == NULL) return;
+
+	/* set dst manually if requested */
 	switch (args[2][0]) {
 		case 't': dst_stack = tableau; break;
 		case 'f': dst_stack = foundations; break;
-		case '\0':
-			int i;
-			for (i = 0; i < 7; i++) {
-				if (i == src_card.index) continue;
-				if (can_move(&tableau[i], *src_card.bottom, i)) {
-					move_card(&tableau[i], &src_card);
-					return;
-				}
-			}
-			for (i = 0; i < 4; i++) {
-				if (can_move(&foundations[i], *src_card.bottom, i)) {
-					move_card(&foundations[i], &src_card);
-					return;
-				}
-			}
-			return;
+		case '\0': break;
 		default: return;
 	}
-	dst_i = strtol(args[3], NULL, 10) - 1;
+	if (args[3][0] != '\0') {
+		dst_i = strtol(args[3], NULL, 10) - 1;
+	}
 	if (dst_stack == foundations && dst_i > 3) return;
 
 	if (can_move(&dst_stack[dst_i], *src_card.bottom, dst_i)) {
