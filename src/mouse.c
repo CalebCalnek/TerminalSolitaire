@@ -66,7 +66,7 @@ void handle_mouse_event(MEVENT event) {
 		}
 
 		for (i = 0; i < 4; i++) {
-			if (held->size == 1 && foundation_contains(event, i)) {
+			if (foundation_contains(event, i)) {
 				if (can_move(&foundations[i], *held->bottom, i)) {
 					move_card(&foundations[i], held);
 				}

@@ -29,6 +29,7 @@ int compare_card(card_t card1, enum rank rank2, enum suit suit2) {
 
 int can_move(cardstack_t *dst, card_t card, int index) {
 	if (dst == &foundations[index]) {
+		if (card.next != NULL) return 0;
 		if (dst->size == 0) return card.rank == ACE;
 		return card.suit == dst->top->suit && card.rank == dst->top->rank + 1;
 	} else if (dst == &tableau[index]) {
