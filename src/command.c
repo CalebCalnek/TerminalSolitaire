@@ -128,7 +128,7 @@ int handle_keyboard(char ch) {
 		if (strcmp(command, "q") == 0) {
 			/* detect quit command */
 			return 1;
-		} else if (strcmp(command, "talon") == 0) {
+		} else if (strcmp(command, "talon") == 0 || strcmp(command, "t") == 0) {
 			/* draw from talon */
 			pop_talon();
 		} else {
