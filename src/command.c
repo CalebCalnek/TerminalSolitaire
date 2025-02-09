@@ -43,8 +43,37 @@ void extract_value(regmatch_t match, char *buffer) {
 }
 
 void exec_cmd(char *args[]) {
-	char *src_rank = args[0];
-	char *src_suit = args[1];
+	enum rank src_rank = str_to_rank(args[0]);
+	enum suit src_suit = str_to_suit(args[1]);
+	cardstack_t src_card = (cardstack_t) { NULL, NULL, 0, 0 };
+	if (wastepile.size > 0
+	&& compare_card(*wastepile.top, src_rank, src_suit)) {
+		src_card = (cardstack_t) { wastepile.top, wastepile.top, 1, -1 };
+	} else {
+		int i, j;
+		card_t *card_i;
+		for (i = 0; i < 7; i++) {
+			if (tableau[i].size == 0) continue;
+			card_i = tableau[i].top;
+			j = tableau[i].size - 1;
+			while (card_i != NULL) {
+				if (compare_card(*card_i, src_rank, src_suit)) {
+					if (card_i->face != DOWN) {
+						src_card = (cardstack_t) {
+							tableau[i].top,
+							card_i,
+							tableau[i].size - j,
+							i
+						};
+					}
+				}
+				card_i = card_i->prev;
+				j--;
+			}
+		}
+	}
+	if (src_card.size == 0) return;
+
 	cardstack_t *dst_stack;
 	switch (args[2][0]) {
 		case 't': dst_stack = tableau; break;
@@ -52,11 +81,10 @@ void exec_cmd(char *args[]) {
 		default: return;
 	}
 	int dst_i = strtol(args[3], NULL, 10) - 1;
+	if (dst_stack == foundations && dst_i > 3) return;
 
-	if (can_move(&dst_stack[dst_i], *wastepile.top, dst_i)) {
-		cardstack_t card;
-		card = (cardstack_t) { wastepile.top, wastepile.top, 1, -1 };
-		move_card(&dst_stack[dst_i], &card);
+	if (can_move(&dst_stack[dst_i], *src_card.bottom, dst_i)) {
+		move_card(&dst_stack[dst_i], &src_card);
 	}
 }
 
