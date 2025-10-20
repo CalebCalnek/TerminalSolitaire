@@ -142,7 +142,7 @@ int handle_keyboard(char ch) {
 		return 0;
 	}
 
-	if (ch == 7 || ch == 263 || ch == KEY_BACKSPACE) {
+	if (ch == 8 || ch == 263 || ch == KEY_BACKSPACE) {
 		/* detect backspace */
 		if (cmd_len > 0) {
 			command[--cmd_len] = '\0';
