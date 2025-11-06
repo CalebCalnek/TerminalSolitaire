@@ -117,20 +117,28 @@ void exec_cmd(char *args[]) {
 void parse_cmd() {
 	regex_t regex;
 	regmatch_t matches[5];
-	char *pattern = "^([2-9]|10|[ajqk])([cdhs]) ?(t|f)?([1-7])?$";
+	char *pattern = "^([2-9]|10|[ajqk])([cdhs*]) ?(t|f)?([1-7])?$";
 	regcomp(&regex, pattern, REG_EXTENDED);
 	if (regexec(&regex, command, 5, matches, 0) == 0) {
 		char src_rank[3], src_suit[2], dst_stack[2], dst_i[2];
-
 		extract_value(matches[1], src_rank);
 		extract_value(matches[2], src_suit);
 		extract_value(matches[3], dst_stack);
 		extract_value(matches[4], dst_i);
-
 		char *exec_args[] = { src_rank, src_suit, dst_stack, dst_i };
-		exec_cmd(exec_args);
+		if (src_suit[0] == '*') {
+			*exec_args[1] = 'c';
+			exec_cmd(exec_args);
+			*exec_args[1] = 'd';
+			exec_cmd(exec_args);
+			*exec_args[1] = 'h';
+			exec_cmd(exec_args);
+			*exec_args[1] = 's';
+			exec_cmd(exec_args);
+		} else {
+			exec_cmd(exec_args);
+		}
 	}
-
 	regfree(&regex);
 }
 
