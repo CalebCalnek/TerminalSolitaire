@@ -170,7 +170,6 @@ int handle_keyboard(char ch) {
 		}
 		memset(command, '\0', MAX_CMD);
 		cmd_len = 0;
-		show_cmdbar = 0;
 	} else if (cmd_len < MAX_CMD - 1) {
 		/* record character */
 		command[cmd_len++] = ch;
