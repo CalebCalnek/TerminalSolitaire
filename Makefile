@@ -1,5 +1,6 @@
 CC = gcc
-CFLAGS = -Wall -g -I.
+# CFLAGS = -Wall -g -I. -std=c90 -pedantic
+CFLAGS = -Wall -g -I. -std=c99
 LDFLAGS = -lncursesw
 
 SRC = $(wildcard src/*.c)

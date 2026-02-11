@@ -120,6 +120,7 @@ void draw_card(card_t card, int x, int y) {
 	int mid_y = CARD_HEIGHT / 2;
 
 	char *fill_char;
+	int i,j;
 
 	if (card.face == UP) {
 		fill_char = " ";
@@ -129,14 +130,14 @@ void draw_card(card_t card, int x, int y) {
 		attron(COLOR_PAIR(4));	/* face down, color blue */
 	}
 
-	// draw blank card
-	for (int i = 0; i < CARD_HEIGHT; i++) {
-		for (int j = 0; j < CARD_WIDTH; j++) {
+	/* draw blank card */
+	for (i = 0; i < CARD_HEIGHT; i++) {
+		for (j = 0; j < CARD_WIDTH; j++) {
 			mvaddstr(y + i, x + j, fill_char);
 		}
 	}
 
-	// draw symbols
+	/* draw symbols */
 	if (card.face == UP) {
 		mvaddstr(y, x, rank);
 		if (card.next != NULL) {

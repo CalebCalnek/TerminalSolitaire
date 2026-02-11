@@ -52,7 +52,7 @@ void handle_mouse_event(MEVENT event) {
 		}
 	} else if (event.bstate & BUTTON1_RELEASED && held != NULL) {
 		for (i = 0; i < 7; i++) {
-			// skip check for drop in same stack
+			/* skip check for drop in same stack */
 			if (i == held->index) continue;
 
 			if (tableau_contains(event, i)) {

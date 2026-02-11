@@ -6,6 +6,8 @@
 #include "card.h"
 
 void init(void) {
+	int i;
+
 	setlocale(LC_ALL, "");
 	initscr();
 	keypad(stdscr, TRUE);
@@ -31,7 +33,7 @@ void init(void) {
 
 	/* deal cards */
 	init_deck();
-	for (int i = 0; i < 7; i++) {
+	for (i = 0; i < 7; i++) {
 		init_tableau(i);
 	}
 	init_talon();

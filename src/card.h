@@ -42,7 +42,7 @@ enum rank {
 	TEN,
 	JACK,
 	QUEEN,
-	KING,
+	KING
 };
 
 typedef struct card_t card_t;

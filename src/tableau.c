@@ -5,6 +5,8 @@
 cardstack_t tableau[7];
 
 void init_tableau(int index) {
+	int i;
+
 	cardstack_t newstack;
 	card_t *card_i;
 
@@ -12,7 +14,7 @@ void init_tableau(int index) {
 	newstack.index = index;
 	newstack.size = 0;
 
-	for (int i = index; i >= 0; i--) {
+	for (i = index; i >= 0; i--) {
 		card_i = deck_select();
 		card_i->face = i == 0 ? UP : DOWN;
 		if (newstack.top != NULL) {
@@ -41,13 +43,13 @@ int tableau_contains(MEVENT event, int i) {
 
 void draw_tableau(int stack_i) {
 	card_t *card_i;
-	int card_count;
+	int card_count, x, y;
 
 	card_i = tableau[stack_i].bottom;
 	card_count = 0;
 
-	int x = TABLEAU_X + STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
-	int y = TABLEAU_Y + card_count;
+	x = TABLEAU_X + STACK_SPACING * (stack_i + 1) + CARD_WIDTH * stack_i;
+	y = TABLEAU_Y + card_count;
 
 	if (card_i == NULL) {
 		draw_empty_stack(x, y);
